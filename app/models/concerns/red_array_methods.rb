@@ -1,11 +1,14 @@
 module RedArrayMethods
-  require 'redis-objects'
   require 'redis'
 
   def self.included(klass)
     klass.class_eval do
-     include Redis::Objects
+      extend RedisConnection
     end
+  end
+
+  def self.redis
+    @redis ||= Redis.new
   end
 
   def redappend(field, value)
@@ -29,7 +32,13 @@ module RedArrayMethods
   end
 
   def redrelate_with_array(field, related_class, limit=10)
-  	related_class.find(self.redget(field)).limit(limit)
+    related_class.find(self.redget(field)).limit(limit)
+  end
+
+  module RedisConnection
+    def redis
+      @redis ||= Redis.new
+    end
   end
 
 end

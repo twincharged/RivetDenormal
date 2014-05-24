@@ -6,10 +6,10 @@ module PGArrayMethods
 
   def append(field, value)
     klass = self.class
-  	klass = 'user_relation' if self.is_a?(User)
-  	query = self.class.connection.execute("UPDATE #{klass.to_s.downcase.pluralize} 
-  								                         SET #{field.to_s} = array_append(#{field.to_s}, #{value})
-  								                         WHERE id = #{self.id}
+    klass = 'user_relation' if self.is_a?(User)
+    query = self.class.connection.execute("UPDATE #{klass.to_s.downcase.pluralize} 
+                                           SET #{field.to_s} = array_append(#{field.to_s}, #{value})
+                                           WHERE id = #{self.id}
                                            RETURNING #{field.to_s}")
     return false unless query.is_a?(PG::Result)
     array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
@@ -37,11 +37,11 @@ module PGArrayMethods
 
 
   def remove(field, value)
-  	klass = self.class
-  	klass = 'user_relation' if self.is_a?(User)
-  	query = self.class.connection.execute("UPDATE #{klass.to_s.downcase.pluralize} 
-  								                         SET #{field.to_s} = array_remove(#{field.to_s}, #{value}) 
-  								                         WHERE id = #{self.id}
+    klass = self.class
+    klass = 'user_relation' if self.is_a?(User)
+    query = self.class.connection.execute("UPDATE #{klass.to_s.downcase.pluralize} 
+                                           SET #{field.to_s} = array_remove(#{field.to_s}, #{value}) 
+                                           WHERE id = #{self.id}
                                            RETURNING #{field.to_s}")
     return false unless query.is_a?(PG::Result)
     array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
@@ -59,26 +59,26 @@ module PGArrayMethods
 
 
   def reload_array(field)
-  	klass = self.class
-  	klass = 'user_relation' if self.is_a?(User)
-  	field = field.to_s
+    klass = self.class
+    klass = 'user_relation' if self.is_a?(User)
+    field = field.to_s
 	  loaded = self.class.find_by_sql("SELECT #{field}
-	  						                     FROM #{klass.to_s.downcase.pluralize}
-	  						                     WHERE id = #{self.id}").first.send(field)
-	  self.send("#{field}=", loaded.uniq)
-	  return self
+                                     FROM #{klass.to_s.downcase.pluralize}
+                                     WHERE id = #{self.id}").first.send(field)
+    self.send("#{field}=", loaded.uniq)
+    return self
   end
 
 
 
   def relate_with_array(field, related_class, limit=10)
-  	klass = self.class.name.underscore
-  	klass = UserRelation.name.underscore if self.is_a?(User)
-  	related_class.find_by_sql("SELECT * FROM #{related_class.to_s.downcase.pluralize}
+    klass = self.class.name.underscore
+    klass = UserRelation.name.underscore if self.is_a?(User)
+    related_class.find_by_sql("SELECT * FROM #{related_class.to_s.downcase.pluralize}
                                WHERE id 
-  							               IN 
-				                      (SELECT unnest(#{field.to_s}) FROM #{klass.to_s.downcase.pluralize} WHERE id = #{self.id})
-				                       LIMIT #{limit}")
+                               IN 
+                              (SELECT unnest(#{field.to_s}) FROM #{klass.to_s.downcase.pluralize} WHERE id = #{self.id})
+                               LIMIT #{limit}")
   end
 
 

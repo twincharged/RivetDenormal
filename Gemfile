@@ -21,8 +21,6 @@ gem 'pry'
 
 gem 'surus'
 
-gem 'redis-objects'
-
 gem 'redis'
 
 gem 'debugger'
