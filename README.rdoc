@@ -84,7 +84,13 @@ _______________________________________________________________________________
 |-GeoLoc
 |-Notifs
 |
+|*Web App
+|-Controllers (semi-dependent on views)
+|-Views
+|-Routing
 |
+|*iOS App
+|-Design (most magic done by rails server API via RestKit)
 |______________________________________________________________________________
 |** Future Considerations:
 |

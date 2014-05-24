@@ -175,7 +175,7 @@ class User < ActiveRecord::Base
 
 
   def post_feed1
-    Post.where(user_id: self.followed_ids).limit(10)
+    Post.where(user_id: self.followed_ids).limit(10)    # these feeds are nonworking due to lack of geolocation function.
   end
 
   def post_feed2(limit=10)
