@@ -14,10 +14,11 @@ describe User do
 
   describe "validations" do
 
+    it { should validate_presence_of(:username)}
+    it { should ensure_length_of(:username) }
+    it { should validate_uniqueness_of(:username)}
     it { should validate_presence_of(:email) }
-    it { should validate_presence_of(:first_name) }
     it { should ensure_length_of(:first_name) }
-    it { should validate_presence_of(:last_name) }
     it { should ensure_length_of(:last_name) }
     it { should validate_uniqueness_of(:email) }
     it { should validate_presence_of(:password) }
@@ -31,12 +32,9 @@ describe User do
     it "should require email" do
       FactoryGirl.build(:user, email: "").should_not be_valid
     end
-
- 
-  ##### INVALID FIRST NAME #####
   
-    it "should require first name" do
-      FactoryGirl.build(:user, first_name: "").should_not be_valid
+    it "should require username" do
+      FactoryGirl.build(:user, username: "").should_not be_valid
     end
   
     it "should reject lengthy first names" do
@@ -50,11 +48,10 @@ describe User do
       FactoryGirl.build(:user, first_name: invalid_users).should_not be_valid
       end
     end
-  
-  ##### INVALID LAST NAME #####
-  
-    it "should require last name" do
-      FactoryGirl.build(:user, last_name: "").should_not be_valid
+    
+    it "should reject lengthy username" do
+      lengthy_name = "long" * 6
+      FactoryGirl.build(:user, username: lengthy_name).should_not be_valid
     end
   
     it "should reject lengthy last names" do
@@ -68,7 +65,14 @@ describe User do
       FactoryGirl.build(:user, last_name: invalid_users).should_not be_valid
       end
     end
-  
+
+    it "should reject usernames" do
+      invalid_users = ["invalid fname1", "2not*valid", "@invalid}3", "4invalid:", "5invalid?", "|_invalid6", "/invalid7", "|inval'id8", "invalid+9", "invalid!10"]
+      invalid_users.each do |invalid_users|
+      FactoryGirl.build(:user, username: invalid_users).should_not be_valid
+      end
+    end
+
   ##### INVALID PASSWORD #####
   
     it "should require password" do
@@ -82,6 +86,13 @@ describe User do
   
     it "should reject short passwords" do
       FactoryGirl.build(:user, password: "short").should_not be_valid
+    end
+
+    it "should reject password mismatch" do
+      invalid = ["CoolKid119", "iheartfalloutboy2", "Im pretty nifty", "0xboxsucks0", "Why so serious", "Ima show you how great I am."]
+      invalid.each do
+        FactoryGirl.build(:user, password: "#{invalid}", password_confirmation: "very #{invalid}").should_not be_valid
+      end
     end
   
   ##### INVALID GENDER #####
@@ -129,6 +140,13 @@ describe User do
       valid_users = ["CoolKid119", "iheartfalloutboy2", "Im pretty nifty", "0xboxsucks0", "Why so serious", "Ima show you how great I am."]
       valid_users.each do |valid_users|
       FactoryGirl.build(:user, password: valid_users, password_confirmation: valid_users).should be_valid
+      end
+    end
+
+    it "should accept username" do
+      valid_users = ["CoolKid119", "iheartfalloutboy2", "Im_pretty_nifty", "0xboxsucks0", "Why-so-serious", "Ima.show.you.how.grt"]
+      valid_users.each do |valid_users|
+      FactoryGirl.build(:user, username: valid_users).should be_valid
       end
     end
   

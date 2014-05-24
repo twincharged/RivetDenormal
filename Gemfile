@@ -23,6 +23,8 @@ gem 'surus'
 
 gem 'redis'
 
+gem 'redis-namespace'
+
 gem 'debugger'
 
 gem 'devise'

@@ -1,14 +1,16 @@
-#config/redis.yml
 default:
   host: localhost
   port: 6379
+
 development:
   db: 0
-#  namespace: appname_dev
+  namespace: bolt_dev
+
 test:
   db: 1
-#  namespace: appname_test
+  namespace: bolt_test
+
 production:
   db: 2
-  host: 192.168.1.100
-#  namespace: appname_prod
+  host: 1432.1432.1324
+  namespace: bolt_production

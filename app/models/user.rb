@@ -5,8 +5,9 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
   include PGArrayMethods
   include RedArrayMethods
-  
-  validates :first_name, :last_name, presence: true, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
+
+  validates :username, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
+  validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true
   validate  :verify_email_not_banned
   before_save  :extract_university
@@ -244,7 +245,7 @@ private
 
   def create_relations
     UserRelation.transaction do
-    	UserRelation.create(user_id: self.id)
+      UserRelation.create(user_id: self.id)
     end
   end
 

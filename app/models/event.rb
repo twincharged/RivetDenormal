@@ -36,7 +36,7 @@ class Event < ActiveRecord::Base
   end
 
   def tagged_users
-	  User.find(self.tagged_user_ids)
+    User.find(self.tagged_user_ids)
   end
 
 ###
