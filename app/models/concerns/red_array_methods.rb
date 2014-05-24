@@ -37,7 +37,7 @@ module RedArrayMethods
 
   module RedisConnection
     def redis
-      @redis ||= Redis.new
+      @@redis ||= Redis.new
     end
   end
 

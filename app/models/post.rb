@@ -1,7 +1,6 @@
 class Post < ActiveRecord::Base
   include PGArrayMethods
   include RedArrayMethods
-  include Redis::Objects
   self.synchronous_commit(false)
 
   attr_readonly :user_id, except: {on: :create}

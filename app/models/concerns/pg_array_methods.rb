@@ -62,7 +62,7 @@ module PGArrayMethods
     klass = self.class
     klass = 'user_relation' if self.is_a?(User)
     field = field.to_s
-	  loaded = self.class.find_by_sql("SELECT #{field}
+    loaded = self.class.find_by_sql("SELECT #{field}
                                      FROM #{klass.to_s.downcase.pluralize}
                                      WHERE id = #{self.id}").first.send(field)
     self.send("#{field}=", loaded.uniq)
