@@ -46,7 +46,7 @@ RSpec.configure do |config|
   config.before(:suite) do
     DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
-    # redis gets flushed before each run in config#redis_init.rb
+    # redis gets flushed before each spec in config#redis_init.rb
   end
 end
 

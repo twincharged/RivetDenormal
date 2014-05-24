@@ -35,6 +35,7 @@ Please feel free to use a different markup language if you do not plan to run
 
 Table of Contents:
 
+* Important
 * To Do
 * Completed Relations
 * Persistence Documentation
@@ -43,12 +44,42 @@ Table of Contents:
 
 
 
+
+
+<--------------------------------> Important <-------------------------------->
+
+_______________________________________________________________________________
+|** Redis:
+|
+|-When entering test evironment (running specs too) or calling
+| Redis.new#flushdb, all environments (development, test, production)
+| are flushed.
+|
+|______________________________________________________________________________
+|** Specs:
+|
+|-Each spec run has a very small chance of creating a user with non-unique
+| fields that should be unique. Aside from using UUIDs or ids, this is hard to
+| eliminate. Solution is to re-run the specs.
+|-If spec fails with the reason 
+| "#class can't find #instance with id of _ or _", it is most likely a
+| mismatch between Postgres and Redis. This is nearly impossible, but if
+| it happens, flush and reset both databases, then run specs again.
+|
+|______________________________________________________________________________
+
+
+
+
+
+
+
+
 <----------------------------------> To Do <---------------------------------->
 
 _______________________________________________________________________________
 |** Now:
 |
-|-Specs
 |-Faye
 |-GeoLoc
 |-Notifs
