@@ -17,7 +17,7 @@ class Feedback < ActiveRecord::Base
 private
 
   def eliminate_feedback_spam
-  	time = Time.now - 1.minutes
+    time = Time.now - 1.minutes
     if Feedback.where("user_id = ? AND created_at > ?", self.user_id, time).load.any?
        errors.add(:user_id, 'Can only send feedback once a minute!')
     end

@@ -5,15 +5,15 @@ class Conversation < ActiveRecord::Base
 ##### Relations
 
   def owner
-  	User.find(self.owner_id)
+    User.find(self.owner_id)
   end
 
   def conversation_users
-  	User.find(self.conversation_user_ids)
+    User.find(self.conversation_user_ids)
   end
 
   def messages
-  	Message.find(self.message_ids)
+    Message.find(self.message_ids)
   end
 
 ##### Actions

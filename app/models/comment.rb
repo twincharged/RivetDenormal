@@ -25,7 +25,7 @@ class Comment < ActiveRecord::Base
   end
 
   def sparkers
-  	User.find(self.sparker_ids)
+    User.find(self.sparker_ids)
   end
 
 ###

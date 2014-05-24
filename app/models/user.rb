@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
-	include PGArrayMethods
+  include PGArrayMethods
   include RedArrayMethods
   
   validates :first_name, :last_name, presence: true, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
 ##### Relations
 
   def posts
-  	self.relate_with_array(:owned_post_ids, Post)
+    self.relate_with_array(:owned_post_ids, Post)
   end
 
   def events
@@ -23,11 +23,11 @@ class User < ActiveRecord::Base
   end
 
   def followers
-  	self.relate_with_array(:follower_ids, User)
+    self.relate_with_array(:follower_ids, User)
   end
 
   def followed
-  	self.relate_with_array(:followed_ids, User)
+    self.relate_with_array(:followed_ids, User)
   end
 
   def groups

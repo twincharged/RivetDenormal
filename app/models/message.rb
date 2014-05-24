@@ -8,15 +8,15 @@ class Message < ActiveRecord::Base
   # after_commit :set_to_unread      #=> Faye
   
   def user
-  	User.find(self.user_id)
+    User.find(self.user_id)
   end
 
   def conversation
-  	Conversation.find(self.conversation_id)
+    Conversation.find(self.conversation_id)
   end
 
   def recipients	
-  	self.conversation.conversation_users
+    self.conversation.conversation_users
   end
 
 private

@@ -1,5 +1,5 @@
 class Event < ActiveRecord::Base
-	include PGArrayMethods
+  include PGArrayMethods
   include RedArrayMethods
   attr_readonly :user_id
   
@@ -28,11 +28,11 @@ class Event < ActiveRecord::Base
   end
 
   def added_users
-  	User.find(self.added_user_ids)
+    User.find(self.added_user_ids)
   end
 
   def invited_users
-  	User.find(self.invited_user_ids)
+    User.find(self.invited_user_ids)
   end
 
   def tagged_users

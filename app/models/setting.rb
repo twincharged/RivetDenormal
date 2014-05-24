@@ -6,6 +6,6 @@ class Setting < ActiveRecord::Base
   validates :follower_approval, :email_notifications, :lock_all_self_content, inclusion: { in: [true, false]}
 
   def user
-	User.find(self.user_id)
+    User.find(self.user_id)
   end
 end

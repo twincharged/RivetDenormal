@@ -1,5 +1,5 @@
 class Post < ActiveRecord::Base
-	include PGArrayMethods
+  include PGArrayMethods
   include RedArrayMethods
   include Redis::Objects
   self.synchronous_commit(false)
@@ -21,7 +21,7 @@ class Post < ActiveRecord::Base
   end
 
   def sparkers
-  	User.find(self.sparker_ids)
+    User.find(self.sparker_ids)
   end
 
   def comments
@@ -35,7 +35,7 @@ class Post < ActiveRecord::Base
 ###
 
   def sparkers_count
-  	self.redcount(:sparker_ids)
+    self.redcount(:sparker_ids)
   end
 
   def comments_count
@@ -66,7 +66,7 @@ private
     return unless (photos.present? && shareable_type.present?)      ||
                   (photos.present? && youtube_url.present?)         ||
                   (shareable_type.present? && youtube_url.present?)
-      errors.add(:base, "Don't post a photo and share content!")
+    errors.add(:base, "Don't post a photo and share content!")
   end
 
   def presence_of_content

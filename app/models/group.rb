@@ -8,11 +8,11 @@ class Group < ActiveRecord::Base
 ##### Relations
 
   def user
-  	User.find(self.user_id)
+    User.find(self.user_id)
   end
 
   def group_users
-  	User.find(self.group_user_ids)
+    User.find(self.group_user_ids)
   end
 
 ##### Actions
