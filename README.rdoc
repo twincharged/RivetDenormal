@@ -1,0 +1,443 @@
+== README
+
+This README would normally document whatever steps are necessary to get the
+application up and running.
+
+Things you may want to cover:
+
+* Ruby version
+
+* System dependencies
+
+* Configuration
+
+* Database creation
+
+* Database initialization
+
+* How to run the test suite
+
+* Services (job queues, cache servers, search engines, etc.)
+
+* Deployment instructions
+
+* ...
+
+
+Please feel free to use a different markup language if you do not plan to run
+<tt>rake doc:app</tt>.
+
+
+
+
+
+
+
+Table of Contents:
+
+* To Do
+* Completed Relations
+* Persistence Documentation
+* UserRelation Documentation
+* Performance Documentation
+
+
+
+<----------------------------------> To Do <---------------------------------->
+
+_______________________________________________________________________________
+|** Now:
+|
+|-Specs
+|-Faye
+|-GeoLoc
+|-Notifs
+|
+|
+|______________________________________________________________________________
+|** Future Considerations:
+|
+|-Remove unused secondary indices and relations for production.
+|-Cache certain relations with @iv ||=
+|-Create background jobs for expiring and copying old Redis lists
+| and putting them in Postgres.
+|
+|
+|
+|______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+<---------------------------> Completed Relations <--------------------------->
+
+_______________________________________________________________________________
+|** Model to Model Relationships Currently Implemented:
+|
+|Relations that will be frequently updated are not cached, providing fresh 
+|data. There are shortcut _count methods for relations that will be frequently
+|read for their count. 
+|
+|- user ~> followers                    _count
+|- user ~> followed                     _count
+|- user ~> owned_posts
+|- user ~> owned_events
+|- user ~> added_events
+|- user ~> invited_events
+|- user ~> groups
+|- user ~> conversations
+|- user ~> blocked_users
+|- user ~> settings
+|
+|- post ~> user
+|- post ~> tagged_users
+|- post ~> sparkers                     _count
+|- post ~> comments                     _count
+|- post ~> flags                        _count
+|- post ~> shared_by                    _count
+|
+|- event ~> user
+|- event ~> tagged_users
+|- event ~> sparkers                    _count
+|- event ~> comments                    _count
+|- event ~> added_users                 _count
+|- event ~> invited_users
+|- event ~> flags                       _count
+|
+|- comment ~> user
+|- comment ~> post
+|- comment ~> event
+|- comment ~> tagged_users
+|- comment ~> sparkers                  _count
+|- comment ~> flags                     _count
+|
+|- group ~> user
+|- group ~> group_users
+|
+|- conversation ~> owner
+|- conversation ~> messages
+|- conversation ~> conversation_users
+|
+|- message ~> user
+|- message ~> conversation
+|
+|
+|______________________________________________________________________________
+|** Model to Model Relationships Using Redis:
+|
+|The sets of foreign ids that are kept in Redis are listed below. The
+|unlisted foreign ids are kept in the Postgres array datatype. The ids
+|listed below were strategically chosen to be kept in Redis rather than
+|Postgres because they are all potentially high velocity, highly updated
+|sets of foreign ids that will ofter a performance benefit by being in
+|Redis and will remove a huge update load off of Postgres. The methods
+|for these Redis sets are kept in the RedArrayModule. These Redis
+|methods are named identically and have the same API as their
+|PGArrayModule counterparts, but have "red" prepended to the method
+|name. The storing User relations (aside from blocked_user_ids) in
+|Redis using RedArrayMethods should be avoided due to the API
+|mismatch with UserRelation.
+|
+|- User/blocked_user_ids
+|
+|- Post/sparker_ids
+|- Post/comment_ids
+|- Post/shared_by_ids
+|
+|- Event/sparker_ids
+|- Event/comment_ids
+|- Event/added_user_ids
+|
+|- Comment/sparker_ids
+|______________________________________________________________________________
+|** Changing Existing Postgres Relationship Arrays to Redis:
+|
+|Changing an object's relationships to a certain model from Postgres to
+|Redis or vice versa is very easy. Just hash out the foreign id field
+|in the Postgres Migration, make sure RedisArrayMethods is included in
+|the class (except User), and create a method with the same name as
+|the hashed out field in the postgres migration. Make sure to prepend any
+|methods using the POstgres array with "red" to use the proper methods
+|in the RedArrayMethods module. These methods can be found in the class
+|that is being changed and the User class, which will most likely contain
+|a create_#model! or destroy_#model! method that uses the PGArrayMethod
+|methods. Again, the RedisArrayMethod module is not meant to support any
+|user relations due to the potential mismatch with the API for the
+|UserRelation mirror class.
+|______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+<------------------------> Persistence Documentation <------------------------>
+
+_______________________________________________________________________________
+|** Application Data Necessities
+|
+|-High need for availability
+|-High need for potential scalability
+|-High need for performance
+|
+|-Moderate need for partition tolerance
+|-Moderate need for reliability
+|
+|-Low need for referential integrity
+|-Low need for consistency
+|-Low need for overall ACIDity
+|
+|______________________________________________________________________________
+|** Database Combinations Tested And Previously Under Development:
+|
+|Polyglot persistent backends that were previously developed for this project
+|are listed below. It states why they were positive for Bolt's use case and
+|the issues caused them to be nullified in regards to Bolt's specific use case.
+|
+|-MySQL
+|  - Nullified: PostgreSQL exists.
+|
+|-Postgres (Normalized)
+|  + Excellent consistency.
+|  - Nullified: Too many transactions, too ACIDic, scalability nightmare
+|    waiting to happen.
+|
+|-Neo4j
+|  + Outstanding for data "joins".
+|  - Nullified: Too slow when finding individual nodes, potential
+|    scalability issues way down the line.
+|
+|-OrientDB
+|  + Similar to Neo4j, but potentially more scalable, faster for
+|    inserting and finding individual nodes.
+|  - Nullified: Slower than Neo4j with data "joins", too immature,
+|    too little documentation to be considered for production.
+|
+|-Redis
+|  + Simplicity, ability to store entire social graph with high 
+|    performance.
+|  - Nullified: Enormous potential memory cost, not ACIDic enough,
+|    would potentially tank performance, not enough documentation
+|    behind clustering.
+|
+|-Cassandra & Redis
+|  + Massive scalability, performance.
+|  - Nullified: Cassandra does not support multiple values on a secondary
+|    index for a single query, heavily weighted towards writing rather 
+|    than reading data.
+|
+|-MongoDB & Redis
+|  + Highly performant, high scalability.
+|  - Nullified: Potential issues with relational data in sub documents,
+|    forcing Redis to carry social graph, causing huge memory footprint.
+|
+|*Postgres (Denormalized) & Redis
+|  + Rails 4.x support for PG array datatypes make potentially any
+|    structured or schema-less pattern viable.
+|  + Documentation.
+|  + Reliability or performance when needed.
+|  + Postgres ability to cluster.
+|  + Ability to use ActiveRecord plugins.
+|  + Light load on Redis.
+|
+|______________________________________________________________________________
+|** Bolt's Case-Specific CAP Theorem
+|
+|        			   Availability
+|        
+|                          /  \
+|                         /    \
+|                        /	    \
+|                       /        \
+|                      /       *  \
+|                     /		       \
+|                    /              \
+|                   /                \
+|                  /                  \
+|                 /                    \
+|                /                      \
+|   Consistency	 ------------------------  Partition Tolerance
+|
+|______________________________________________________________________________
+|** Bolt's Case-Specific Persistence Model
+|
+|Nearly all data <=> data relationships are stored in arrays. For Redis, these
+|are Sets most of the time. For Postgres, they are array datatypes. This
+|discourages use of secondary table indices by allowing the primary keys
+|kept in the aforementioned relationships arrays to be fed directly into the
+|table primary indices for much quicker retrieval without having to scan
+|tables for non-unique values. This approach is both radical and "heretical"
+|with relational databases. If you don't like it, bite me.
+|
+|Example:
+|
+|		      |---------------------------------------------|
+|		      |												|
+|		      |					  Application     		    |     |-----------|
+|  REDIS 	  |=================|           |===============|     |  Postgres |
+|  values <---|	GET blocked_ids |		    | GET followers	|---->|  Values   |
+|	|	      |---------------------------------------------|     |-----------|
+|	|					^                             ^           |     |     |
+|	V                   |						      |	          |     V     |
+||--------------|		|                             |           |-----------|
+|| PRIMARY:	    |		|                             |           | PRIMARY:  |
+|| values	    |-- RETURN ROWS                     RETURN ROWS --| values	  |
+||--------------|                                                 |-----------|
+|
+|
+|Redis is used for the realtime, quickly changing, frequently indexed primary
+|keys that should also be relevant to push notifications. Postgres is for
+|the less frequently indexed values that usually get injected into a SQL query
+|for primary index lookup. This is because the primary key query can act as a
+|subquery of the actual data row lookup, therefore increasing performance, 
+|efficiency, and atomicity by using a single query for multiple object lookups.
+|This opposes Redis, which mainly uses its value for displaying the count of 
+|items (or just because they need to be realtime), such as the number of
+|sparks a post has. This also takes a large load off of Redis because Postgres
+|holds most of the social graph, allowing Redis to be quick where it needs
+|to be.
+|______________________________________________________________________________
+|** Literal Description
+|
+|These "foreign id lists" trick Postgres into believing it's Redis
+|by using array datatypes. Here's an example schema for UserRelation:
+|
+||------------------------------------------------------------------------|
+||  user_id  |   follower_ids   | 	...					   				  |
+||------------------------------------------------------------------------|
+|
+|
+||------------------------------------------------------------------------|
+||      1    | [8,234,82,12,14] |	...									  |
+||------------------------------------------------------------------------|
+|
+|Each row can be seen as a hash. Example:
+|
+|{user_id: 1, follower_ids: [8,234,82,12,14]}
+|
+|Or a document. Example:
+|
+|{
+|	user_id: 1,
+|	follower_ids: [
+|			8,
+|			234,
+|			82,
+|			12,
+|			14
+|	]
+|}
+|
+|______________________________________________________________________________
+|** Concept Description
+|
+|This allows data relations to be simply modeled without join tables
+|or true foreign keys. Each array can be indexed using GiST or GIN.
+|This enables the avoidance of scanning large tables for secondary
+|indices. This also helps you avoid costly table joins because an array
+|of primary ids can be grabbed out of the relations table and fed
+|directly into the primary index of another. This will make scaling a 
+|breeze in comparison to join tables and foreign indices as well as
+|eliminating the need of many secondary indices. This will also allow 
+|clustering/sharding/partitioning to be far easier.
+|
+|The downside is that you must sacrifice referential integrity 
+|because Postgres does not support foreign keys for arrays. Another
+|potential downside is that new data, such as a new follower, must 
+|be updated on an existing column rather than creating a full new 
+|row. This means linear performance will be slightly sacrificed on
+|the altar of exponential scalability.
+|
+|Postgres gives many array operators that increase atomicity. For
+|instance, items can be pushed directly to an array rather than
+|pulling the array out to the application, updating the array,
+|then pushing it back to Postgres. Documentation can be found here: 
+|[ http://www.postgresql.org/docs/9.1/static/functions-array.html ]
+|
+|______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+<-----------------------> UserRelation Documentation <------------------------>
+
+_______________________________________________________________________________
+|** UserRelation Purpose
+|
+|-This class is solely a mirror to the User class, meant to hold
+| each user's relationships that are not neccessary to attach to
+| the actual user object, for practical and performance reasons.
+| The primary id of the table is equal to the user's id. There are
+| no other unique columns on the table. When a user is created, their
+| equivalent on the user_relations table is created as well.
+|
+|______________________________________________________________________________
+
+
+
+
+
+
+
+
+
+<-----------------------> Performance Documentation <------------------------->
+
+_______________________________________________________________________________
+|** Future Possibilities to Improve Overall Read Performance
+|
+|-Further denormalize data to prevent unneccessary trips to database.
+| + Move follower_ids array to users table, rather than user_relations
+|   table. This would prevent a full trip to the database to get the
+|   correct array because the array would already be attached to the
+|   user object.
+| + Each post could have copy of user's name and profile photo,
+|   preventing each post from calling self.user.photo, etc. This
+|   would let the database only make one trip for all posts,
+|   not one plus one for each post. This could substantially
+|   increase loading performance of post and event feeds. This
+|   also goes for each event, comment, etc.
+|
+|
+|
+|
+|
+|
+|______________________________________________________________________________
+|** Future Possibilities to Improve Postgres Update Performance:
+|
+|-For increasing update performance, consider turning
+| syncronous_commit off. This slightly increases potential data loss,
+| but will largely increase column update performance.
+| + Result: synchronous_commit(off) results in update performance
+|   roughly 50% greater than with it on. For inserts, a 15%
+|   performance increase can be seen. Additionally, it removes
+|   nearly 8 milliseconds from each individual transaction that 
+|   would normally be used as commit time.
+|
+|-Can increase wal_writer_delay, wal_buffers, checkpoint_segments,
+| and shared_buffers. Adjusting these settings can potentially
+| increase data loss and recovery time after a crash, as well as
+| increase total disk space.
+|
+|-To increase update performance but increase diskspace, create
+| tables/indices with fillfactor set lower. Max and default is 100.
+|
+|-Can turn off fsync. Use this only as a last resort.
+|
+|______________________________________________________________________________
+
+
