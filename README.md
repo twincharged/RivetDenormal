@@ -1,1 +1,1 @@
-To use this repo: clone, start up Redis and Postgres, run migrations. Read out the Readme.rdoc raw or using the edit function for more details.
+To use this repo: clone, start up Redis and Postgres, run migrations. Make sure Postgres is version 9.3, the latest. Read the Readme.rdoc raw for more details.
