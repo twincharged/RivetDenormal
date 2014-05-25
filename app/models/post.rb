@@ -2,10 +2,9 @@ class Post < ActiveRecord::Base
   include PGArrayMethods
   include RedArrayMethods
   self.synchronous_commit(false)
+  attr_readonly :user_id, except: {on: :create}
 
   mount_uploader :photo_mult, PhotoUploader
-
-  attr_readonly :user_id, except: {on: :create}
 
   validates :user_id, presence: true, length: {maximum: 5000}
   validates :shareable_type, inclusion: {in: %w( Post )}, allow_nil: true

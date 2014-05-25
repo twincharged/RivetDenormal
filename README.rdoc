@@ -186,15 +186,12 @@ _______________________________________________________________________________
 |- Post/sparker_ids
 |- Post/comment_ids
 |- Post/shared_by_ids
-|- Post/flagger_ids
 |
 |- Event/sparker_ids
 |- Event/comment_ids
 |- Event/added_user_ids
-|- Event/flagger_ids
 |
 |- Comment/sparker_ids
-|- Comment/flagger_ids
 |______________________________________________________________________________
 |** Changing Existing Postgres Relationship Arrays to Redis:
 |
@@ -432,7 +429,7 @@ _______________________________________________________________________________
 | + append_mult(:field, values=[])
 | + remove(:field, value)
 | + relate_with_array(:field, related_class, limit=10)
-| + reload_array(:field)
+| + get(:field)
 |
 |-The relate_with_array method is meant to find related objects using
 | only one transaction (via subquery), rather than querying for a list
@@ -461,12 +458,11 @@ _______________________________________________________________________________
 | + redget(:field)
 | + redcount(:field)
 |
-|-The only difference between modules is that RedArrayMethods does not
-| need a reload_array method. The reload_array method is partially
-| replaced by redget. The redget method exists because many of the
-| foreign ids in Redis only need to be foreign ids and will not be
-| translated into objects often. For instance: every time a new page
-| is loaded for a user, each array of items will be scanned for a user
+|-The only difference between modules is that PGArrayMethods does not
+| need a count method. The redget method is important because many of
+| the foreign ids in Redis only need to be foreign ids and will not be
+| translated into objects often. For instance: every time a new page is
+| loaded for a user, each array of items will be scanned for a user
 | id that matches that in user#blocked_user_ids (in Redis), so it can
 | be avoided in rendering a page. This is why this relationship needs
 | to be in Redis, as its raw ids (using redget) will be called often,

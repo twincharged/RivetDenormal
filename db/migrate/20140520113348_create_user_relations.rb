@@ -16,6 +16,7 @@ class CreateUserRelations < ActiveRecord::Migration
       t.integer :followed_ids,            array: true, default: []
       t.integer :follower_ids,            array: true, default: []
       t.integer :pending_follower_ids,    array: true, default: []
+      t.integer :flagger_ids,             array: true, default: []
  
       # t.integer :owned_notification_ids,  array: true, default: []     #=> Redis/Faye to do.
       # t.integer :owned_comment_ids,       array: true, default: []     #=> Not nesccessary. Index via GIN if so.

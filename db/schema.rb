@@ -131,6 +131,7 @@ ActiveRecord::Schema.define(version: 20140524021732) do
     t.integer  "followed_ids",         default: [], array: true
     t.integer  "follower_ids",         default: [], array: true
     t.integer  "pending_follower_ids", default: [], array: true
+    t.integer  "flagger_ids",          default: [], array: true
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -8,9 +8,7 @@ class Event < ActiveRecord::Base
   validates :body, presence: true, length: { maximum: 3000 }
   validates :public, inclusion: [true, false]
   validate  :presence_of_content
-  
   after_validation :correct_times
-
   after_destroy :remove_from_list
 
 ##### Relations

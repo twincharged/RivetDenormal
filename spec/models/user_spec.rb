@@ -302,6 +302,29 @@ describe User do
       @user4.added_events.should_not include(event)
     end
 
+    it "should flag event" do
+      event = @user3.create_event!(FakerAtts.public_event)
+      @user4.flag!(event)
+      event.flagger_ids.should include(@user4.id)
+    end
+
+    it "should flag post" do
+      post = @user3.create_post!(FakerAtts.public_post)
+      @user4.flag!(post)
+      post.flagger_ids.should include(@user4.id)
+    end
+
+    it "should flag comment" do
+      post = @user1.create_post!(FakerAtts.public_post)
+      comment = @user3.create_comment!(post, FakerAtts.comment)
+      @user4.flag!(comment)
+      comment.flagger_ids.should include(@user4.id)
+    end
+
+    it "should flag user" do
+      @user4.flag!(@user3)
+      @user3.flagger_ids.should include(@user4.id)
+    end
   end
 end
 

@@ -1,20 +1,21 @@
 class User < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
   include PGArrayMethods
   include RedArrayMethods
+  self.synchronous_commit(false)
+
+  devise :database_authenticatable, :registerable,
+         :recoverable, :rememberable, :trackable, :validatable
 
   mount_uploader :avatar, AvatarUploader
   mount_uploader :backdrop, BackdropUploader
 
-  validates :username, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
+  validates :username, presence: true, uniqueness: true,
+            format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
   validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true
   validate  :verify_email_not_banned
   before_save  :extract_university
-  after_create :create_settings, :create_relations
+  after_create :create_settings_and_relations
 
 ##### Relations
 
@@ -55,7 +56,10 @@ class User < ActiveRecord::Base
   end
 
   def settings
-    Setting.find(self.id)
+    set = Setting.find(self.id)
+    return set unless set.nil?
+    newset = Setting.create(user_id: self.id)
+    return newset
   end
 
 ###
@@ -70,6 +74,10 @@ class User < ActiveRecord::Base
 
   def followed_count
     self.followed_ids.count
+  end
+
+  def flagger_ids
+    self.get(:flagger_ids) #blech
   end
 
   def relations
@@ -243,18 +251,15 @@ private
     end
   end
 
-  def create_settings
-    Setting.create!(user_id: self.id)
-  end
-
   def verify_email_not_banned
     return unless banned?(self.email)
     errors.add(:base, 'You have been banned from creating an account.')
   end
 
-  def create_relations
-    UserRelation.transaction do
+  def create_settings_and_relations
+    User.transaction do
       UserRelation.create(user_id: self.id)
+      Setting.create!(user_id: self.id)
     end
   end
 

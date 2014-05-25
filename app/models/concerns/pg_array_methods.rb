@@ -58,15 +58,15 @@ module PGArrayMethods
 
 
 
-  def reload_array(field)
+  def get(field)
     klass = self.class
     klass = 'user_relation' if self.is_a?(User)
     field = field.to_s
-    loaded = self.class.find_by_sql("SELECT #{field}
-                                     FROM #{klass.to_s.downcase.pluralize}
-                                     WHERE id = #{self.id}").first.send(field)
-    self.send("#{field}=", loaded.uniq)
-    return self
+    query = self.class.connection.execute("SELECT #{field}
+                                           FROM #{klass.to_s.downcase.pluralize}
+                                           WHERE id = #{self.id}")
+    return false unless query.is_a?(PG::Result)
+    array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
   end
 
 

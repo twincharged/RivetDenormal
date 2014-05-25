@@ -1,6 +1,5 @@
 class Feedback < ActiveRecord::Base
 
-
   attr_readonly :user_id, except: {on: :create}
   
   validates :user_id, :body, presence: true

@@ -1,5 +1,5 @@
 class Setting < ActiveRecord::Base
-
+  self.synchronous_commit(false)
   alias_attribute :user_id, :id
 
   validates :user_id, presence: true
