@@ -5,12 +5,14 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.0'
 # Use postgresql as the database for Active Record
 gem 'pg'
+gem 'surus'
 
 group :development, :test do 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'database_cleaner'
+  gem 'debugger'
 end
 
 group :test do
@@ -19,15 +21,16 @@ end
 
 gem 'pry'
 
-gem 'surus'
-
 gem 'redis'
-
 gem 'redis-namespace'
 
-gem 'debugger'
+gem 'sidekiq'
 
 gem 'devise'
+
+gem 'carrierwave'
+gem 'mini_magick'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.3'
 # Use Uglifier as compressor for JavaScript assets
@@ -57,7 +60,4 @@ gem 'spring',        group: :development
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
 

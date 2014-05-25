@@ -83,7 +83,7 @@ _______________________________________________________________________________
 |-Faye
 |-GeoLoc
 |-Notifs
-|-Background jobs (Resque+Goworker?)
+|-Background jobs (Sidekiq, eventually Goworker?)
 |
 |*Web App
 |-Controllers (semi-dependent on views)

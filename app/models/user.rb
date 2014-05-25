@@ -6,6 +6,9 @@ class User < ActiveRecord::Base
   include PGArrayMethods
   include RedArrayMethods
 
+  mount_uploader :avatar, AvatarUploader
+  mount_uploader :backdrop, BackdropUploader
+
   validates :username, presence: true, uniqueness: true, format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
   validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true

@@ -3,6 +3,8 @@ class Post < ActiveRecord::Base
   include RedArrayMethods
   self.synchronous_commit(false)
 
+  mount_uploader :photos, PhotoUploader
+
   attr_readonly :user_id, except: {on: :create}
 
   validates :user_id, presence: true, length: {maximum: 5000}
