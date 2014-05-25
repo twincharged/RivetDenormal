@@ -219,7 +219,7 @@ describe User do
     end
 
     it "should create user <~> group" do
-      group = @user3.create_group!(name: "Bffs", group_user_ids: [@user4.id, @user2.id])
+      group = @user3.create_group!([@user4, @user2], name: "Bffs")
       group.group_users.should include(@user4, @user2)
     end
 

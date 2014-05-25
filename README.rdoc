@@ -83,6 +83,7 @@ _______________________________________________________________________________
 |-Faye
 |-GeoLoc
 |-Notifs
+|-Background jobs (Resque+Goworker?)
 |
 |*Web App
 |-Controllers (semi-dependent on views)
@@ -185,12 +186,15 @@ _______________________________________________________________________________
 |- Post/sparker_ids
 |- Post/comment_ids
 |- Post/shared_by_ids
+|- Post/flagger_ids
 |
 |- Event/sparker_ids
 |- Event/comment_ids
 |- Event/added_user_ids
+|- Event/flagger_ids
 |
 |- Comment/sparker_ids
+|- Comment/flagger_ids
 |______________________________________________________________________________
 |** Changing Existing Postgres Relationship Arrays to Redis:
 |
@@ -237,43 +241,43 @@ _______________________________________________________________________________
 |
 |Polyglot persistent backends that were previously developed for this project
 |are listed below. It states why they were positive for Bolt's use case and
-|the issues caused them to be nullified in regards to Bolt's specific use case.
+|the issues caused them to be dismissed in regards to Bolt's specific use case.
 |
 |-MySQL
-|  - Nullified: PostgreSQL exists.
+|  - Dismissed: PostgreSQL exists.
 |
 |-Postgres (Normalized)
 |  + Excellent consistency.
-|  - Nullified: Too many transactions, too ACIDic, scalability nightmare
+|  - Dismissed: Too many transactions, too ACIDic, scalability nightmare
 |    waiting to happen.
 |
 |-Neo4j
 |  + Outstanding for data "joins".
-|  - Nullified: Too slow when finding individual nodes, potential
+|  - Dismissed: Too slow when finding individual nodes, potential
 |    scalability issues way down the line.
 |
 |-OrientDB
 |  + Similar to Neo4j, but potentially more scalable, faster for
 |    inserting and finding individual nodes.
-|  - Nullified: Slower than Neo4j with data "joins", too immature,
+|  - Dismissed: Slower than Neo4j with data "joins", too immature,
 |    too little documentation to be considered for production.
 |
 |-Redis
 |  + Simplicity, ability to store entire social graph with high 
 |    performance.
-|  - Nullified: Enormous potential memory cost, not ACIDic enough,
-|    would potentially tank performance, not enough documentation
-|    behind clustering.
+|  - Dismissed: Enormous potential memory cost, not ACIDic enough,
+|    would potentially tank performance, not comfortable with trusting
+|    Redis clustering for all data.
 |
 |-Cassandra & Redis
 |  + Massive scalability, performance.
-|  - Nullified: Cassandra does not support multiple values on a secondary
+|  - Dismissed: Cassandra does not support multiple values on a secondary
 |    index for a single query, heavily weighted towards writing rather 
 |    than reading data.
 |
 |-MongoDB & Redis
 |  + Highly performant, high scalability.
-|  - Nullified: Potential issues with relational data in sub documents,
+|  - Dismissed: Potential issues with relational data in sub documents,
 |    forcing Redis to carry social graph, causing huge memory footprint.
 |
 |*Postgres (Denormalized) & Redis
@@ -311,8 +315,8 @@ _______________________________________________________________________________
 |discourages use of secondary table indices by allowing the primary keys
 |kept in the aforementioned relationships arrays to be fed directly into the
 |table primary indices for much quicker retrieval without having to scan
-|tables for non-unique values. This approach is both radical and "heretical"
-|with relational databases. If you don't like it, bite me.
+|tables for non-unique values. This approach is both radical and possibly 
+|"heretical" with relational databases.
 |
 |Example:
 |
@@ -401,6 +405,80 @@ _______________________________________________________________________________
 |
 |______________________________________________________________________________
 
+
+
+
+
+
+
+
+
+
+<----------------------------> API Documentation <---------------------------->
+
+_______________________________________________________________________________
+|** Server API Description
+|
+|-Seeing as Rails does not offer many tools for ATOMically dealing with
+| Postgres arrays, the PGArrayMethods module was created. The API is very
+| simple. To append a foreign id to an array, make sure the module is
+| included in the class, call ".append" on the class instance that
+| has the array meant to be changed. This method has two arguments. The
+| first is the name of the array column (use a symbol), and the second is
+| the id that is to be appended. List of all methods and arguments:
+|
+|-PGArrayMethods
+| + append(:field, value)
+| + append_mult(:field, values=[])
+| + remove(:field, value)
+| + relate_with_array(:field, related_class, limit=10)
+| + reload_array(:field)
+|
+|-The relate_with_array method is meant to find related objects using
+| only one transaction (via subquery), rather than querying for a list
+| of foreign ids, coming back to the application, then issuing another
+| query using those ids. This method also increases data consistency
+| when read, and increases the ability for the data to be real time.
+| Here's an example of the method in action:
+|
+| post = Post.find(2)
+| post.relate_with_array(:comment_ids, Comment)
+|
+|-This will return all comments belonging to this post in a single
+| query without scanning any tables. If an object's relations are
+| kept in Redis (see Completed Relations/Model to Model Relationships
+| Using Redis), the API is identical. Be sure RedArrayMethods is
+| included in the class, then call the same method and arguments
+| that would be called from the PGArrayMethods module, but prepend
+| "red" to the method name. Here's a list of the near-identical
+| Redis array methods in RedArrayMethods:
+|
+|-RedArrayMethods
+| + redappend(:field, value)
+| + redappend_mult(:field, values=[])
+| + redremove(:field, value)
+| + redrelate_with_array(:field, related_class, limit=10)
+| + redget(:field)
+| + redcount(:field)
+|
+|-The only difference between modules is that RedArrayMethods does not
+| need a reload_array method. The reload_array method is partially
+| replaced by redget. The redget method exists because many of the
+| foreign ids in Redis only need to be foreign ids and will not be
+| translated into objects often. For instance: every time a new page
+| is loaded for a user, each array of items will be scanned for a user
+| id that matches that in user#blocked_user_ids (in Redis), so it can
+| be avoided in rendering a page. This is why this relationship needs
+| to be in Redis, as its raw ids (using redget) will be called often,
+| but it will be translated into objects (using redrelate_with_array)
+| not very often. The redcount method exists solely for a performance
+| benefit of Redis counting the number of ids in a set rather than
+| getting the full list of ids, bringing them back to the app, and
+| having Ruby count them. This method is not in the PGArrayMethods
+| module because it is faster to do the opposite of the aformentioned
+| while counting, also because spent in a single query should be
+| minimized.
+|______________________________________________________________________________
 
 
 

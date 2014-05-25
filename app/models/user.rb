@@ -70,7 +70,10 @@ class User < ActiveRecord::Base
   end
 
   def relations
-    UserRelation.find(self.id)
+    relate = UserRelation.find(self.id)
+    return relate unless relate.nil?
+    newrelate = UserRelation.create(user_id: self.id)
+    return newrelate
   end
 
   def self.relation_types
@@ -129,8 +132,9 @@ class User < ActiveRecord::Base
     return comment
   end
 
-  def create_group!(attrs={})
+  def create_group!(users=[], attrs={})
     attrs[:user_id] = self.id
+    attrs[:group_user_ids] = users.map(&:id).uniq
     group = Group.create!(attrs)
     self.append(:owned_group_ids, group.id)
     return group
@@ -175,8 +179,10 @@ class User < ActiveRecord::Base
 
 
   def post_feed1
-    Post.where(user_id: self.followed_ids).limit(10)    # these feeds are nonworking due to lack of geolocation function.
+    Post.where(user_id: self.followed_ids).limit(10)
   end
+  
+  # these feeds are nonworking due to lack of geolocation function.
 
   def post_feed2(limit=10)
     Post.find_by_sql("SELECT * FROM posts WHERE user_id 
