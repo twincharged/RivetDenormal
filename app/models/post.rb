@@ -3,7 +3,7 @@ class Post < ActiveRecord::Base
   include RedArrayMethods
   self.synchronous_commit(false)
 
-  mount_uploader :photos, PhotoUploader
+  mount_uploader :photo_mult, PhotoUploader
 
   attr_readonly :user_id, except: {on: :create}
 
@@ -60,6 +60,16 @@ class Post < ActiveRecord::Base
   def comment_ids
     self.redget(:comment_ids)
   end
+
+
+  # def photo_mult
+  #   _mounter(:photos).uploader
+  #   self.photos.map{|f| super(f)}
+  # end
+
+  # def photo_mult=(array=[])
+  #   self.photos = array
+  # end
 
 private
 
