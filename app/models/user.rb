@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: true,
             format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
-  validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 1, maximum: 20}
+  validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {maximum: 20}, allow_nil: true
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true
   validate  :verify_email_not_banned
   before_save  :extract_university

@@ -81,6 +81,7 @@ _______________________________________________________________________________
 |** Now:
 |
 |-Faye
+|-Angular
 |-GeoLoc
 |-Notifs
 |-Background jobs (Sidekiq, eventually Goworker?)
