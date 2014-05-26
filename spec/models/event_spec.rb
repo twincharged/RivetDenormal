@@ -69,7 +69,7 @@ describe Event do
 
     it "should require correct content" do
       FactoryGirl.build(:public_event, youtube_url: "Hs2W3Rt5n").should_not be_valid
-      FactoryGirl.build(:public_event, photos: nil).should_not be_valid
+      FactoryGirl.build(:public_event, photo: nil).should_not be_valid
     end
   end
 
@@ -85,7 +85,7 @@ describe Event do
     end
 
     it "should create with youtube" do
-      FactoryGirl.create(:public_event, photos: nil, youtube_url: "Hs2W3Rt5n").should be_valid
+      FactoryGirl.create(:public_event, photo: nil, youtube_url: "Hs2W3Rt5n").should be_valid
     end
   end
 

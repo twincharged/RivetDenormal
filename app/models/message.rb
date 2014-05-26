@@ -1,7 +1,9 @@
 class Message < ActiveRecord::Base
   self.synchronous_commit(false) # true for push notifs?
   attr_readonly :user_id, :conversation_id
-  
+
+  # mount_uploader :photo, PhotoUploader
+
   validates :user_id, :conversation_id, presence: true
   validates :body, length: {maximum: 5000}
   validate :presence_of_content

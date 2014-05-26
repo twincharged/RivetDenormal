@@ -8,7 +8,7 @@ FactoryGirl.define do
     address "8417 Random st."
     start_time (Time.now + 24.hours)
     end_time (Time.now + 26.hours)
-    photos { ["app/assets/images/logo-white.png"] }  # EXAMPLE PHOTO
+    photo "blah.png"  # EXAMPLE PHOTO
     public true
   end
 
@@ -19,7 +19,7 @@ FactoryGirl.define do
     address "8417 Random st."
     start_time (Time.now + 20.hours)
     end_time (Time.now + 23.hours)
-    photos { ["app/assets/images/logo-white.png"] }  # EXAMPLE PHOTO
+    photo {File.open("app/assets/images/logo-white.png")}  # EXAMPLE PHOTO
     public false
   end
 end

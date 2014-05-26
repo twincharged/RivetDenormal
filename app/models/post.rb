@@ -4,7 +4,7 @@ class Post < ActiveRecord::Base
   self.synchronous_commit(false)
   attr_readonly :user_id, except: {on: :create}
 
-  mount_uploader :photo_mult, PhotoUploader
+  # mount_uploader :photo, PhotoUploader
 
   validates :user_id, presence: true, length: {maximum: 5000}
   validates :shareable_type, inclusion: {in: %w( Post )}, allow_nil: true
@@ -60,28 +60,18 @@ class Post < ActiveRecord::Base
     self.redget(:comment_ids)
   end
 
-
-  # def photo_mult
-  #   _mounter(:photos).uploader
-  #   self.photos.map{|f| super(f)}
-  # end
-
-  # def photo_mult=(array=[])
-  #   self.photos = array
-  # end
-
 private
 
   def valid_content_combination
-    return unless (photos.present? && shareable_type.present?)      ||
-                  (photos.present? && youtube_url.present?)         ||
+    return unless (photo.present? && shareable_type.present?)       ||
+                  (photo.present? && youtube_url.present?)          ||
                   (shareable_type.present? && youtube_url.present?)
     errors.add(:base, "Don't post a photo and share content!")
   end
 
   def presence_of_content
     return unless  body.blank?            &&  
-                   photos.blank?          &&  
+                   photo.blank?           &&  
                    shareable_type.blank?  &&  
                    youtube_url.blank?
 

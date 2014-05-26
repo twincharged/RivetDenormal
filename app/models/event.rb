@@ -2,7 +2,9 @@ class Event < ActiveRecord::Base
   include PGArrayMethods
   include RedArrayMethods
   attr_readonly :user_id
-  
+
+  # mount_uploader :photo, PhotoUploader
+
   validates :address, :user_id, :start_time, :end_time, presence: true
   validates :name, presence: true, length: {maximum: 60}
   validates :body, presence: true, length: { maximum: 3000 }
@@ -86,7 +88,7 @@ class Event < ActiveRecord::Base
 private
 
   def presence_of_content
-    return if (self.youtube_url.present? ^ self.photos.present?)
+    return if (self.youtube_url.present? ^ self.photo.present?)
     errors.add(:base, "Need at least one photo or a video!")
   end
 

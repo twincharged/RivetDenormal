@@ -63,10 +63,10 @@ describe Post do
       FactoryGirl.build(:post, body: 'WELL HELLO').should be_valid
     end
 
-    # it "should create post with photo" do
-    #   file = [File.open("app/assets/images/logo-white.png")]
-    #   FactoryGirl.build(:post, photos: file).should be_valid
-    # end
+    it "should create post with photo" do
+      file = File.open("app/assets/images/logo-white.png")
+      FactoryGirl.build(:post, photo: file).should be_valid
+    end
 
     it "should share post with youtube" do
       FactoryGirl.build(:youtube_post).should be_valid

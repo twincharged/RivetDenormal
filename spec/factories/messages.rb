@@ -5,6 +5,6 @@ FactoryGirl.define do
   	user_id { FactoryGirl.create(:user).id }
   	conversation_id { FactoryGirl.create(:user_conversation).id }
   	body { Faker::Lorem.characters(30) }
-  	photo "app/assets/images/logo-white.png"
+    photo {File.open("app/assets/images/logo-white.png")}  # EXAMPLE PHOTO
   end
 end

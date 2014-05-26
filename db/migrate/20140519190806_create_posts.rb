@@ -4,7 +4,7 @@ class CreatePosts < ActiveRecord::Migration
       t.text       :body
       t.boolean    :public, default: false
       t.string     :youtube_url
-      t.text       :photos, array: true, default: []
+      t.string     :photo
 
       t.integer    :user_id
       t.references :shareable, polymorphic: true

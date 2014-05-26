@@ -10,7 +10,7 @@ FactoryGirl.define do
   factory :photo_post, class: "Post" do
   	user_id { FactoryGirl.create(:user).id }
   	body { Faker::Lorem.sentence(word_count = 5) }
-  	photos [File.open("app/assets/images/logo-white.png")]
+    photo {File.open("app/assets/images/logo-white.png")}  # EXAMPLE PHOTO
   	public true
   end
 

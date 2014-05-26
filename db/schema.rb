@@ -55,7 +55,7 @@ ActiveRecord::Schema.define(version: 20140524021732) do
     t.boolean  "special",          default: true
     t.datetime "start_time"
     t.datetime "end_time"
-    t.text     "photos",           default: [],    array: true
+    t.string   "photo"
     t.string   "youtube_url"
     t.integer  "user_id"
     t.integer  "tagged_user_ids",  default: [],    array: true
@@ -99,7 +99,7 @@ ActiveRecord::Schema.define(version: 20140524021732) do
     t.text     "body"
     t.boolean  "public",          default: false
     t.string   "youtube_url"
-    t.text     "photos",          default: [],    array: true
+    t.string   "photo"
     t.integer  "user_id"
     t.integer  "shareable_id"
     t.string   "shareable_type"

@@ -8,7 +8,7 @@ class CreateEvents < ActiveRecord::Migration
       t.boolean  :special, default: true
       t.datetime :start_time
       t.datetime :end_time
-      t.text     :photos, array: true, default: []
+      t.string   :photo
       t.string   :youtube_url
 
       t.integer  :user_id

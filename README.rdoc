@@ -131,6 +131,7 @@ _______________________________________________________________________________
 |- user ~> conversations
 |- user ~> blocked_users
 |- user ~> settings
+|- user ~> flags
 |
 |- post ~> user
 |- post ~> tagged_users
@@ -319,16 +320,16 @@ _______________________________________________________________________________
 |
 |             |---------------------------------------------|
 |             |                                             |
-|             |                  Application                |     |-----------|
-|  REDIS      |=================|           |===============|     |  Postgres |
-|  values <---| GET blocked_ids |           | GET followers |---->|  Values   |
-|      |      |---------------------------------------------|     |-----------|
-|      |                 ^                           ^            |     |     |
-|      V                 |                           |            |     V     |
-||--------------|        |                           |            |-----------|
-|| PRIMARY:     |        |                           |            | PRIMARY:  |
-|| values       |-- RETURN ROWS                 RETURN ROWS ------|  values   |
-||--------------|                                                 |-----------|
+|             |                  Application                |    |-----------|
+|  REDIS      |=================|           |===============|    |  Postgres |
+|  values <---| GET blocked_ids |           | GET followers |--->|  Values   |
+|      |      |---------------------------------------------|    |-----------|
+|      |                 ^                          ^            |     |     |
+|      V                 |                          |            |     V     |
+||-----------|           |                          |            |-----------|
+|| PRIMARY:  |           |                          |            | PRIMARY:  |
+||  values   |----- RETURN ROWS                 RETURN ROWS -----|  values   |
+||-----------|                                                   |-----------|
 |
 |
 |Redis is used for the realtime, quickly changing, frequently indexed primary

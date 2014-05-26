@@ -6,8 +6,8 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  mount_uploader :avatar, AvatarUploader
-  mount_uploader :backdrop, BackdropUploader
+  # mount_uploader :avatar, PhotoUploader
+  # mount_uploader :backdrop, BackdropUploader
 
   validates :username, presence: true, uniqueness: true,
             format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
