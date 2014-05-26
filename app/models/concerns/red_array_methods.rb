@@ -7,6 +7,8 @@ module RedArrayMethods
     end
   end
 
+protected
+
   def self.redis
     @redis ||= Redis.new
   end

@@ -241,7 +241,6 @@ class User < ActiveRecord::Base
 
 private
 
-
   def extract_university 
     return if self.entity == true
     if /[^.@]+\.edu$/ =~ self.email

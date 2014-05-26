@@ -2,7 +2,7 @@ module PGArrayMethods
 
 ##### append(), append_mult(), and remove() are nearly identical methods
 
-
+protected
 
   def append(field, value)
     klass = self.class

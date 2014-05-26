@@ -19,6 +19,8 @@ group :test do
   gem 'shoulda-matchers'
 end
 
+gem 'angularjs-rails-resource'
+
 gem 'pry'
 
 gem 'redis'
