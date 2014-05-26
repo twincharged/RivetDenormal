@@ -7,11 +7,13 @@ class BackdropUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  if Rails.env == 'test'
-    storage :file
-  else
-    storage :fog
-  end
+  
+  # If there are issues with slow tests, uncomment lines below to manually override. Initializer should work though.
+  # if Rails.env == 'test'
+    # storage :file
+  # else
+    # storage :fog
+  # end
   
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
@@ -30,10 +32,11 @@ class BackdropUploader < CarrierWave::Uploader::Base
   # Process files as they are uploaded:
   # process :scale => [200, 300]
 
-  unless Rails.env == "test"
+  # If there are issues with slow tests, uncomment line below to manually override. Initializer should work though.
+  # unless Rails.env == "test"
     process :resize_to_fill => [1200, 300]
     process :convert => 'png'
-  end
+  # end
 
   # Create different versions of your uploaded files:
   # version :thumb do

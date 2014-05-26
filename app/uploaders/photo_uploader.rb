@@ -7,12 +7,14 @@ class PhotoUploader < CarrierWave::Uploader::Base
   include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
-  if Rails.env == 'test'
-    storage :file
-  else
-    storage :fog
-  end
   
+  # If there are issues with slow tests, uncomment lines below to manually override. Initializer should work though.
+  # if Rails.env == 'test'
+    # storage :file
+  # else
+    # storage :fog
+  # end
+
   # Override the directory where uploaded files will be stored.
   # This is a sensible default for uploaders that are meant to be mounted:
   def store_dir
@@ -36,7 +38,8 @@ class PhotoUploader < CarrierWave::Uploader::Base
 
   # Create different versions of your uploaded files:
 
-  unless Rails.env == "test"
+  # If there are issues with slow tests, uncomment line below to manually override. Initializer should work though.
+  # unless Rails.env == "test"
     process :resize_to_fit => [622, 622]
     process :convert => 'png'
 
@@ -54,7 +57,7 @@ class PhotoUploader < CarrierWave::Uploader::Base
       process :resize_to_fill => [60,60]
       process :convert => 'png'
     end
-  end
+  # end
   
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
