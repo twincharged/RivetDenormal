@@ -4,7 +4,7 @@ class Comment < ActiveRecord::Base
   self.synchronous_commit(false)
   attr_readonly :user_id, except: {on: :create}
 
-  # mount_uploader :photo, PhotoUploader
+  mount_uploader :photo, PhotoUploader
 
   validates :user_id, :threadable_id, :threadable_type, presence: true
   validates :body, presence: true, length: { maximum: 500 }

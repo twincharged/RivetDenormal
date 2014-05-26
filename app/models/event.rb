@@ -3,7 +3,7 @@ class Event < ActiveRecord::Base
   include RedArrayMethods
   attr_readonly :user_id
 
-  # mount_uploader :photo, PhotoUploader
+  mount_uploader :photo, PhotoUploader
 
   validates :address, :user_id, :start_time, :end_time, presence: true
   validates :name, presence: true, length: {maximum: 60}

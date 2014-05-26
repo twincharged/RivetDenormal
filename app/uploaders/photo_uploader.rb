@@ -32,18 +32,21 @@ class PhotoUploader < CarrierWave::Uploader::Base
   # end
 
   # Create different versions of your uploaded files:
-  process :resize_to_fit => [622, 622]
 
-  version :large do
-    process :resize_to_fill => [350,400]
-  end
+  unless Rails.env == "test"
+      process :resize_to_fit => [622, 622]
 
-  version :medium do
-    process :resize_to_fill => [150,150]
-  end
-
-  version :thumb do
-    process :resize_to_fill => [60,60]
+    version :large do
+      process :resize_to_fill => [350,400]
+    end
+  
+    version :medium do
+      process :resize_to_fill => [150,150]
+    end
+  
+    version :thumb do
+      process :resize_to_fill => [60,60]
+    end
   end
   
   # Add a white list of extensions which are allowed to be uploaded.
