@@ -1,23 +1,19 @@
-// This is a manifest file that'll be compiled into application.js, which will include all the files
-// listed below.
-//
-// Any JavaScript/Coffee file within this directory, lib/assets/javascripts, vendor/assets/javascripts,
-// or vendor/assets/javascripts of plugins, if any, can be referenced here using a relative path.
-//
-// It's not advisable to add code directly here, but if you do, it'll appear at the bottom of the
-// compiled file.
-//
-// Read Sprockets README (https://github.com/sstephenson/sprockets#sprockets-directives) for details
-// about supported directives.
-//
-
 
 //= require jquery
 //= require jquery_ujs
 
-//= require_tree .
-//= require angularjs/rails/resource
-
-
+//= require underscore-min
 //= require angular
-//= require main
+//= require angularjs/rails/resource
+// require angularjs-rails-templates
+
+//= require_self
+//= require_directory './services'
+//= require_directory './services/concerns'
+//= require_directory './controllers'
+//= require_directory './controllers/concerns'
+//= require_directory './directives'
+//= require_directory './directives/concerns'
+//= require_directory './templates'
+//= require modules
+//= require routes

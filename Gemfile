@@ -20,6 +20,9 @@ group :test do
 end
 
 gem 'angularjs-rails-resource'
+gem 'angular-rails-templates'
+gem 'angularjs-rails'
+gem 'ng-rails-csrf'
 
 gem 'pry'
 

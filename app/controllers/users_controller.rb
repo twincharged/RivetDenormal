@@ -65,7 +65,7 @@ class UsersController < ApplicationController
   end
 
   def near_users
-    @users = current_user.closeby_users.paginate(page: params[:page])
+    # @users = current_user.closeby_users.paginate(page: params[:page])
   end
 
   private

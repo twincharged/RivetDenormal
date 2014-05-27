@@ -1,21 +1,31 @@
 Rails.application.routes.draw do
+
+  get 'login', to: 'users#create', as: :login
+
+
   devise_for :users
 
   namespace :api, defaults: {format: :json} do
-    resources :users # do
-    #   member do
-    #     resources :posts
-    #     resources :conversations
-    #     resources :groups
-    #     resources :events
-    #   end
-    # end
+
+      # devise_scope :user do
+      #   match '/sessions', to: 'sessions#create', via: :post
+      #   match '/sessions', to: 'sessions#destroy', via: :delete
+      # end
+
+      # resources :record
+
+      # resources :users, only: [:create]
+      # match '/users', to: 'users#show', via: :get
+      # match '/users', to: 'users#update', via: :put
+      # match '/users', to: 'users#destroy', via: :delete
+
   end
 
   resources :users, defaults: {format: :json} do
     get '/following/', to: 'users#following'
     get '/followers/', to: 'users#followers'
   end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

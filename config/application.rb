@@ -23,5 +23,9 @@ module Bolt
       require "pry"
       config.console = Pry
     end
+
+    config.assets.paths << Rails.root.join('vendor', 'assets', 'components', 'javascripts')
+
+    config.assets.precompile.shift
   end
 end
