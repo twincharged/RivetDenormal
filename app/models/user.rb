@@ -11,10 +11,10 @@ class User < ActiveRecord::Base
 
   validates :username, presence: true, uniqueness: true,
             format: {with: /\A[A-Za-z0-9]+(?:[._-][A-Za-z0-9]+)*\z/i}, length: {minimum: 3, maximum: 20}
-  validates :first_name, :last_name, format: {with: /\A[a-z ,.'-]+\z/i}, length: {maximum: 20}, allow_nil: true
+  validates :fullname, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 3, maximum: 32}, allow_nil: true
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true
   validate  :verify_email_not_banned
-  before_save  :extract_university
+  before_save  :extract_university, :squeeze_fullname
   after_create :create_settings_and_relations
 
 ##### Relations
@@ -188,6 +188,10 @@ class User < ActiveRecord::Base
 
 ###
 
+  def name
+    return self.fullname if fullname.present?
+    return self.username
+  end
 
   def post_feed1
     Post.where(user_id: self.followed_ids).limit(10)
@@ -247,6 +251,14 @@ private
       self.university = $&
     else
       self.university = "UNKNOWN"
+    end
+  end
+
+  def squeeze_fullname
+    if self.fullname.blank?
+      self.fullname = nil
+    else
+      self.fullname = self.fullname.squeeze
     end
   end
 

@@ -18,14 +18,12 @@ describe User do
     it { should ensure_length_of(:username) }
     it { should validate_uniqueness_of(:username)}
     it { should validate_presence_of(:email) }
-    it { should ensure_length_of(:first_name) }
-    it { should ensure_length_of(:last_name) }
+    it { should ensure_length_of(:fullname) }
     it { should validate_uniqueness_of(:email) }
     it { should validate_presence_of(:password) }
     it { should ensure_length_of(:password) }
 
   end
-
 
   describe "invalid attributes" do
 
@@ -37,15 +35,29 @@ describe User do
       FactoryGirl.build(:user, username: "").should_not be_valid
     end
   
-    it "should reject lengthy first names" do
-      lengthy_name = "long" * 6
-      FactoryGirl.build(:user, first_name: lengthy_name).should_not be_valid
+    it "should reject lengthy full names" do
+      lengthy_name = "long" * 10
+      FactoryGirl.build(:user, fullname: lengthy_name).should_not be_valid
     end
-  
-    it "should reject first name" do
+
+    it "should reject short full names" do
+      FactoryGirl.build(:user, fullname: "Bo").should_not be_valid
+    end
+
+    it "should revert blank fullname to nil" do
+      user = FactoryGirl.create(:user, fullname: "    ")
+      User.find(user.id).fullname.should == nil
+    end
+
+    it "should sqeeze fullname" do
+      user = FactoryGirl.create(:user, fullname: "Joe   C   Ritchie")
+      User.find(user.id).fullname.should == "Joe C Ritchie"
+    end
+
+    it "should reject full name" do
       invalid_users = ["invalid_fname1", "2not valid", "@invalid3", "4invalid:", "5invalid?", "_invalid6", "/invalid7", "|invalid8", "invalid\9", "invalid{10"]
       invalid_users.each do |invalid_users|
-      FactoryGirl.build(:user, first_name: invalid_users).should_not be_valid
+      FactoryGirl.build(:user, fullname: invalid_users).should_not be_valid
       end
     end
     
@@ -54,15 +66,15 @@ describe User do
       FactoryGirl.build(:user, username: lengthy_name).should_not be_valid
     end
   
-    it "should reject lengthy last names" do
-      lengthy_name = "long" * 6
-      FactoryGirl.build(:user, last_name: lengthy_name).should_not be_valid
+    it "should reject lengthy full names" do
+      lengthy_name = "long" * 10
+      FactoryGirl.build(:user, fullname: lengthy_name).should_not be_valid
     end
   
-    it "should reject last names" do
+    it "should reject full names" do
       invalid_users = ["invalid_fname1", "2not valid", "@invalid3", "4invalid:", "5invalid?", "_invalid6", "/invalid7", "|invalid8", "invalid\9", "invalid''10"]
       invalid_users.each do |invalid_users|
-      FactoryGirl.build(:user, last_name: invalid_users).should_not be_valid
+      FactoryGirl.build(:user, fullname: invalid_users).should_not be_valid
       end
     end
 
@@ -122,17 +134,17 @@ describe User do
       end
     end
   
-    it "should accept first name" do
-      valid_users = ["John", "Matt", "Amit", "Hassan-Al", "McClain", "L'Trell"]
+    it "should accept full name" do
+      valid_users = ["Mr. John", "Matt F", "A. Coo", "Hassan-Al", "McClain", "L'Trell"]
       valid_users.each do |valid_users|
-      FactoryGirl.build(:user, first_name: valid_users).should be_valid
+      FactoryGirl.build(:user, fullname: valid_users).should be_valid
       end
     end
   
-    it "should accept last name" do
-      valid_users = ["Smith", "Freal", "Case", "El-Ar", "McCormick", "L'Neal"]
+    it "should accept full name" do
+      valid_users = ["Smith Joe", "Freal", "Case", "El-Ar", "McCormick", "L'Neal"]
       valid_users.each do |valid_users|
-      FactoryGirl.build(:user, last_name: valid_users).should be_valid
+      FactoryGirl.build(:user, fullname: valid_users).should be_valid
       end
     end
   
@@ -169,6 +181,13 @@ describe User do
     it "should create setting" do
       valid_user = FactoryGirl.create(:user)
       Setting.find_by(user_id: valid_user.id).should_not be_nil
+    end
+
+    it "should return present name" do
+      user = FactoryGirl.create(:user, fullname: nil)
+      user.name.should == user.username
+      user.update(fullname: "Joe Ritchie")
+      user.name.should == "Joe Ritchie"
     end
 
   end

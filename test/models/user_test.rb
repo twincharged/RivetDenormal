@@ -5,7 +5,7 @@ class UserTest < ActiveSupport::TestCase
   #   assert true
   # end
   def self.create_user
-    User.create(username: Faker::Internet.user_name, first_name: Faker::Name.first_name, last_name: Faker::Name.last_name)
+    User.create(username: Faker::Internet.user_name, fullname: Faker::Name.name)
     # , email: "#{username}@email.arizona.edu", password: 'password', password_confirmation: 'password'
   end
 
