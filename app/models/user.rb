@@ -269,7 +269,7 @@ private
 
   def create_settings_and_relations
     User.transaction do
-      UserRelation.create(user_id: self.id)
+      UserRelation.create!(user_id: self.id)
       Setting.create!(user_id: self.id)
     end
   end

@@ -1,12 +1,20 @@
 Rails.application.routes.draw do
   devise_for :users
-  resources :users do
-    member do
-      resources :posts
-      resources :conversations
-      resources :groups
-      resources :events
-    end
+
+  namespace :api, defaults: {format: :json} do
+    resources :users # do
+    #   member do
+    #     resources :posts
+    #     resources :conversations
+    #     resources :groups
+    #     resources :events
+    #   end
+    # end
+  end
+
+  resources :users, defaults: {format: :json} do
+    get '/following/', to: 'users#following'
+    get '/followers/', to: 'users#followers'
   end
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
