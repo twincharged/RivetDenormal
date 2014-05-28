@@ -1,7 +1,9 @@
+module Api
+
 class UsersController < ApplicationController
   respond_to :json
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user!, except: [:new, :create, :show, :index]
+  before_filter :authenticate_user! #, except: [:new, :create, :show, :index]
   
   def new
     @user = User.new
@@ -82,4 +84,5 @@ class UsersController < ApplicationController
       params.require(:user).permit(:avatar, :avatar_cache, :backdrop, :first_name, :last_name, :description, :birthday, :gender, :password, :password_confirmation) 
     end
 
+end
 end

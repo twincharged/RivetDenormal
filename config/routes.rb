@@ -5,6 +5,13 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
 
+    resources :users, defaults: {format: :json} do
+      member do
+        get '/following/', to: 'users#following'
+        get '/followers/', to: 'users#followers'
+      end
+    end
+    
       # devise_scope :user do
       #   match '/sessions', to: 'sessions#create', via: :post
       #   match '/sessions', to: 'sessions#destroy', via: :delete
@@ -17,11 +24,6 @@ Rails.application.routes.draw do
       # match '/users', to: 'users#update', via: :put
       # match '/users', to: 'users#destroy', via: :delete
 
-  end
-
-  resources :users, defaults: {format: :json} do
-    get '/following/', to: 'users#following'
-    get '/followers/', to: 'users#followers'
   end
 
   # The priority is based upon order of creation: first created -> highest priority.
