@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
 
-  get 'login', to: 'users#create', as: :login
-
 
   devise_for :users
 

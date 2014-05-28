@@ -27,12 +27,6 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
-    angular-rails-templates (0.1.2)
-      railties (>= 3.1)
-      sprockets
-      tilt
-    angularjs-rails (1.2.16)
-    angularjs-rails-resource (1.1.1)
     arel (5.0.1.20140414130214)
     bcrypt (3.1.7)
     builder (3.2.2)
@@ -117,7 +111,6 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (2.9.1)
-    ng-rails-csrf (0.1.0)
     nokogiri (1.6.2.1)
       mini_portile (= 0.6.0)
     orm_adapter (0.5.0)
@@ -215,9 +208,6 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  angular-rails-templates
-  angularjs-rails
-  angularjs-rails-resource
   carrierwave
   coffee-rails (~> 4.0.0)
   database_cleaner
@@ -229,7 +219,6 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   mini_magick
-  ng-rails-csrf
   pg
   pry
   rails (= 4.1.0)
