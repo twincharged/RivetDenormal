@@ -1,4 +1,4 @@
 'use strict'
 
 angular.module('boltClientApp')
-  .controller 'UsersCtrl', ($scope) ->
+  .controller('UsersCtrl', ($scope) -> )

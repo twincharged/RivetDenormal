@@ -1,4 +1,4 @@
 'use strict'
 
 angular.module('boltClientApp')
-  .controller('FeedsCtrl', ($scope) -> )
+  .controller('MainCtrl', ($scope) -> {})
