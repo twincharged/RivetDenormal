@@ -23,3 +23,6 @@ CarrierWave.configure do |config|
     config.cache_dir = "#{Rails.root}/tmp/uploads"
   end
 end
+
+# Mime.send(:remove_const, :JSON)
+# Mime::Type.register "text/x-javascript", :json

@@ -1,0 +1,16 @@
+<div class="hero-unit">
+  <h1>Pipr</h1>
+  <form name="pipForm">
+    <input type="text" required 
+           ng-model="newPip.name" placeholder="Name"/><br />
+    <textarea ng-maxlength="100" required
+              ng-model="newPip.pip" placeholder="pip up here..."/>
+    <b>{{100 - newPip.pip.length}}</b>
+    <input type="text" ng-model="newPip.tags" split-to-list />
+    <button ng-click="makePip()" ng-disabled="pipForm.$invalid || pipForm.$pristine" class="btn btn-success">Post Pip</button>
+  </form>
+  <div ng-repeat="pip in pips">
+      <b>{{pip}}</b>
+      <i>{{pip.body}}</i>
+  </div>
+</div>

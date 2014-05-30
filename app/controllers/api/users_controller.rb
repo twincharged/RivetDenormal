@@ -1,9 +1,9 @@
-module Api
+module API
 
 class UsersController < ApplicationController
   respond_to :json
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_filter :authenticate_user! #, except: [:new, :create, :show, :index]
+  # before_filter :authenticate_user! #, except: [:new, :create, :show, :index]
   
   def new
     @user = User.new
@@ -55,15 +55,21 @@ class UsersController < ApplicationController
   end
 
   def following
-    @user = User.find(params[:user_id])
+    @user = User.find(params[:id])
     @users = @user.followed
     respond_with(@users)
   end
 
   def followers
-    @user = User.find(params[:user_id])
+    @user = User.find(params[:id])
     @users = @user.followers
     respond_with(@users)
+  end
+
+  def posts
+    @user = User.find(params[:id])
+    @posts = @user.posts
+    respond_with(@posts)
   end
 
   def near_users

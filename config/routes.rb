@@ -3,10 +3,11 @@ Rails.application.routes.draw do
 
   devise_for :users
 
-  namespace :api, defaults: {format: :json} do
+  namespace :api, path: '/', constraints: {subdomain: 'api'}, defaults: {format: :json} do
 
     resources :users, defaults: {format: :json} do
       member do
+        get '/posts', to: 'users#posts'
         get '/following/', to: 'users#following'
         get '/followers/', to: 'users#followers'
       end
