@@ -1,4 +1,7 @@
 'use strict'
 
 angular.module('boltWebApp')
-  .controller 'MainCtrl', ($scope) ->
+  .controller('MainCtrl', ['$scope', 
+    ($scope) ->
+
+  ])
