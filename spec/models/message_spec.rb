@@ -51,12 +51,12 @@ describe Message do
   describe "valid attributes" do
 
   	it "should allow photo" do
-  	  message = FactoryGirl.build(:message, photo: File.open("app/assets/images/logo-white.png"))
+  	  message = FactoryGirl.build(:message, photo: File.open("public/logo-white.png"))
   	  message.should be_valid
   	end
 
   	it "should allow photo and body" do
-  	  message = FactoryGirl.build(:message, body: "HEY", photo: File.open("app/assets/images/logo-white.png"))
+  	  message = FactoryGirl.build(:message, body: "HEY", photo: File.open("public/logo-white.png"))
   	  message.should be_valid
   	end
   end

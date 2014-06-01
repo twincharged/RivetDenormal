@@ -64,7 +64,7 @@ describe Post do
     end
 
     it "should create post with photo" do
-      file = File.open("app/assets/images/logo-white.png")
+      file = File.open("public/logo-white.png")
       FactoryGirl.build(:post, photo: file).should be_valid
     end
 

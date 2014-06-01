@@ -1,4 +1,5 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
+# This file is copied to spec/ when you run 'rails generate rspec:install'
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
@@ -55,12 +56,12 @@ class FakerAtts
 
   def self.public_event
     event = {body: Faker::Lorem.sentence(2), name: Faker::Lorem.characters(15), address: Faker::Lorem.characters(15),
-             special: false, start_time: Time.now + 1.day, end_time: Time.now + 30.hours, public: true, photo: File.open("app/assets/images/logo-white.png")}  # EXAMPLE PHOTO
+             special: false, start_time: Time.now + 1.day, end_time: Time.now + 30.hours, public: true, photo: File.open("public/logo-white.png")}  # EXAMPLE PHOTO
   end
 
   def self.private_event
     event = {body: Faker::Lorem.sentence(2), name: Faker::Lorem.characters(15), address: Faker::Lorem.characters(15),
-             special: false, start_time: Time.now + 1.day, end_time: Time.now + 30.hours, public: false, photo: File.open("app/assets/images/logo-white.png")} 
+             special: false, start_time: Time.now + 1.day, end_time: Time.now + 30.hours, public: false, photo: File.open("public/logo-white.png")} 
   end
 
   def self.public_post

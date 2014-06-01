@@ -4,7 +4,7 @@ Devise.setup do |config|
   # The secret key used by Devise. Devise uses this key to generate
   # random tokens. Changing this key will render invalid all existing
   # confirmation, reset password and unlock tokens in the database.
-  # config.secret_key = '7a67d5ebc9c160c4b8283b31083cecca945cbc406bfdc60b6ed0b687ae83a9d9af97dd0fee3a99e21331ac26a8dfb4236af2b8ca8ce8b2c140ed9fad564ff6da'
+  # config.secret_key = 'd57542350c985ed8ed98d611017c1ff1452143087cce7857a0e2e87c701a4b7e7810fd0d11fc79a7dd4007f537e91e00b10e3f1a21f3ca389775911890f46671'
 
   # ==> Mailer Configuration
   # Configure the e-mail address which will be shown in Devise::Mailer,
@@ -59,7 +59,7 @@ Devise.setup do |config|
   # given strategies, for example, `config.http_authenticatable = [:database]` will
   # enable it only for database authentication. The supported strategies are:
   # :database      = Support basic authentication with authentication key + password
-  # config.http_authenticatable = false
+  config.http_authenticatable = true
 
   # If http headers should be returned for AJAX requests. True by default.
   # config.http_authenticatable_on_xhr = true
@@ -77,7 +77,7 @@ Devise.setup do |config|
   # Notice that if you are skipping storage for all authentication paths, you
   # may want to disable generating routes to Devise's sessions controller by
   # passing skip: :sessions to `devise_for` in your config/routes.rb
-  config.skip_session_storage = [:http_auth]
+  config.skip_session_storage = [:http_auth, :token_auth]
 
   # By default, Devise cleans up the CSRF token on authentication to
   # avoid CSRF token fixation attacks. This means that, when using AJAX
@@ -97,7 +97,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 10
 
   # Setup a pepper to generate the encrypted password.
-  # config.pepper = '853750d15e6f249ba74c0c8c79b06136fa28a218078c58c367610ef1bebe6e289d99298e80f347811f99c9334a56b642f721b03b6b915628431da008d36d33ce'
+  # config.pepper = '82d1a27da8b0c09c51287466c688870098996934d144e678eaf985a7eadc271d0c6c170ab372e2f3ab0b078fcfbee518eae6ec7a8ab1cbee1f57f05ac08d3068'
 
   # ==> Configuration for :confirmable
   # A period that the user is allowed to access the website even without
@@ -235,10 +235,9 @@ Devise.setup do |config|
   # If you want to use other strategies, that are not supported by Devise, or
   # change the failure app, you can configure them inside the config.warden block.
   #
-  # config.warden do |manager|
-  #   manager.intercept_401 = false
-  #   manager.default_strategies(scope: :user).unshift :some_external_strategy
-  # end
+  config.warden do |manager|
+    manager.failure_app = CustomAuthFail
+  end
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine

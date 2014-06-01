@@ -43,20 +43,20 @@ class PhotoUploader < CarrierWave::Uploader::Base
     process :resize_to_fit => [622, 622]
     process :convert => 'png'
 
-    version :large do
-      process :resize_to_fill => [350,400]
-      process :convert => 'png'
-    end
+    # version :large do
+    #   process :resize_to_fill => [350,400]
+    #   process :convert => 'png'
+    # end
   
-    version :medium do
-      process :resize_to_fill => [150,150]
-      process :convert => 'png'
-    end
+    # version :medium do
+    #   process :resize_to_fill => [150,150]
+    #   process :convert => 'png'
+    # end
   
-    version :thumb do
-      process :resize_to_fill => [60,60]
-      process :convert => 'png'
-    end
+    # version :thumb do
+    #   process :resize_to_fill => [60,60]
+    #   process :convert => 'png'
+    # end
   # end
   
   # Add a white list of extensions which are allowed to be uploaded.

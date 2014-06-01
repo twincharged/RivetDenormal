@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   self.synchronous_commit(false)
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
 
   mount_uploader :avatar, PhotoUploader
   mount_uploader :backdrop, BackdropUploader
