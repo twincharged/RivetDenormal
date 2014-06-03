@@ -21,6 +21,7 @@ gem 'carrierwave'
 gem 'mini_magick'
 gem 'fog'
 
+gem 'rack-cors', require: 'rack/cors'
 
 group :development, :test do 
   gem 'rspec-rails'

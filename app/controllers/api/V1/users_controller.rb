@@ -51,7 +51,8 @@ class UsersController < ApplicationController
 
   def posts
     @posts = @user.posts
-    respond_with(@posts)
+    @response = {user: @user, posts: @posts}
+    respond_with(@response)
   end
 
   def near_users
