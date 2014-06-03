@@ -1,7 +1,9 @@
 'use strict'
 
 angular.module('boltWebApp')
-  .controller('MainCtrl', ['$scope', 'Post'
-    ($scope, Post) ->
-
-  ])
+  .controller 'MainCtrl', ($scope) ->
+    $scope.awesomeThings = [
+      'HTML5 Boilerplate'
+      'AngularJS'
+      'Karma'
+    ]
