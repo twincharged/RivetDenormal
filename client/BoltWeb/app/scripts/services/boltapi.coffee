@@ -2,13 +2,12 @@
 
 angular.module("boltWebApp.services", ['restangular'])
 
-.factory "BoltApi", (Restangular, $q) ->
+.factory "BoltApi", (Restangular)->
 
   getProfile: (userId)->
     # deferred = $q.defer()
-    Restangular.one("users", userId).get().then (profile)->
-      return profile
+    Restangular.one("users", userId).get().$object
+      # Restangular.one("users", 1).get().then (data)->
       # deferred.resolve(data)
       # deferred.promise
       # return data
-    # console.log(data)

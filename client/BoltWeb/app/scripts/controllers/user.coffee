@@ -4,6 +4,7 @@ class UserCtrl
  constructor: (@$scope, @$stateParams, BoltApi) ->
 
     @$scope.langs = ['JavaScript', 'Swift', 'Objective-C']
+    @$scope.userId = @$stateParams.userId
     @$scope.user = BoltApi.getProfile(@$scope.userId)
 
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
