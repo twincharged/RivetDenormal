@@ -4,8 +4,9 @@ angular
   .module('boltWebApp', [
     'ngCookies',
     'ngSanitize',
-    'restangular',
-    'ui.router'
+    'ui.router',
+    'boltWebApp.services',
+    'restangular'
   ])
 
 .config ($stateProvider, $urlRouterProvider)->
@@ -27,3 +28,6 @@ angular
       templateUrl: 'views/user.html'
       controller: ($scope, $stateParams)->
         $scope.userId = $stateParams.userId
+
+.config (RestangularProvider)->
+    RestangularProvider.setBaseUrl('http://127.0.0.1:3000/api/v1')

@@ -1,11 +1,14 @@
 'use strict'
 
-angular.module('boltWebApp')
+angular.module("boltWebApp.services", ['restangular'])
 
-  .factory 'BoltApi', ['restangular', (RestangularProvider)->
-    RestangularProvider.setBaseUrl('http://127.0.0.1:3000/api/v1')
+.factory "BoltApi", (Restangular, $q) ->
 
-  ]
-
-
-  # .service 'UserService', ->
+  getProfile: (userId)->
+    # deferred = $q.defer()
+    Restangular.one("users", userId).get().then (profile)->
+      return profile
+      # deferred.resolve(data)
+      # deferred.promise
+      # return data
+    # console.log(data)
