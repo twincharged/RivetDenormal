@@ -8,8 +8,8 @@ Rails.application.routes.draw do
       resources :users do
         member do
           get '/profile', to: 'users#profile'
-          get '/following/', to: 'users#following'
-          get '/followers/', to: 'users#followers'
+          get '/following', to: 'users#following'
+          get '/followers', to: 'users#followers'
           resources :conversations do
             member do
              get '/messages', to: 'conversations#show'

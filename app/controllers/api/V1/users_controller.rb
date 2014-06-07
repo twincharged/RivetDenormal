@@ -39,20 +39,20 @@ class UsersController < ApplicationController
     @user.update(deactivated: true)
   end
 
-  def following
-    @users = @user.followed
-    respond_with(@users)
-  end
-
-  def followers
-    @users = @user.followers
-    respond_with(@users)
-  end
-
   def profile
     @posts = @user.posts
     @response = {user: @user, posts: @posts}
     respond_with(@response)
+  end
+
+  def followers
+    @users = @user.followers
+    respond_with({followers: @users})
+  end
+
+  def following
+    @users = @user.followed
+    respond_with({following: @users})
   end
 
   def near_users

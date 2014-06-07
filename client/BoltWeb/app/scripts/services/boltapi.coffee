@@ -2,14 +2,29 @@
 
 angular.module("boltWebApp.services", ['restangular'])
 
-.factory "BoltApi", (Restangular, $q)->
+.factory "BoltApi", (Restangular)->
+
+  getUser: (userId)->
+  	Restangular.one("users", userId).get()
 
   getProfile: (userId)->
+    Restangular.one("users", userId).one("profile").get()
 
-    deferred = $q.defer()
-    # Restangular.one("users", userId).one("profile").get().$object
-    Restangular.one("users", userId).one("profile").get() #.then (data)->
+  getFollowers: (userId)->
+  	Restangular.one("users", userId).one("followers").get()
+
+  getFollowing: (userId)->
+  	Restangular.one("users", userId).one("following").get()
+
+
+
+
+
+
+
+
+    # deferred = $q.defer()
+    # Restangular.one("users", userId).one("profile").get().then (data)->   #.$object
       # deferred.resolve(data)
-      # r = deferred.promise
+      # deferred.promise
       # console.log data
-      # return data

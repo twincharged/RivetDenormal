@@ -1,14 +1,21 @@
 'use strict'
 
 class UserCtrl
- constructor: ($scope, $stateParams, BoltApi) ->
+ constructor: ($scope, $stateParams, BoltApi, Restangular) ->
 
-    profile = BoltApi.getProfile($stateParams.userId)
-    profile.then (data)->
+    BoltApi.getProfile($stateParams.userId).then (data)->
       $scope.user = data.user
       $scope.posts = data.posts
 
-UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
+    getFollowers = (userId)->
+      BoltApi.getFollowers(userId).then (data)->
+      	$scope.followers = data.followers
+
+    getFollowing = (userId)->
+      BoltApi.getFollowing(userId).then (data)->
+      	$scope.following = data.following
+
+UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi', 'Restangular']
 angular.module("boltWebApp").controller "UserCtrl", UserCtrl
 
 
