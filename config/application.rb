@@ -24,6 +24,7 @@ module Bolt
 
     config.middleware.use Rack::Cors do
       allow do
+        origins 'http://127.0.0.1:9000'
         origins '*'
         resource '*', headers: :any, methods: [:get, :post, :options]
       end

@@ -49,7 +49,7 @@ class UsersController < ApplicationController
     respond_with(@users)
   end
 
-  def posts
+  def profile
     @posts = @user.posts
     @response = {user: @user, posts: @posts}
     respond_with(@response)

@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users do
         member do
-          get '/posts', to: 'users#posts'
+          get '/profile', to: 'users#profile'
           get '/following/', to: 'users#following'
           get '/followers/', to: 'users#followers'
           resources :conversations do

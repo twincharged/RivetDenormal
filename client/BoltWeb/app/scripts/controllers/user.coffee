@@ -1,11 +1,12 @@
 'use strict'
 
 class UserCtrl
- constructor: (@$scope, @$stateParams, BoltApi) ->
+ constructor: ($scope, $stateParams, BoltApi) ->
 
-    @$scope.langs = ['JavaScript', 'Swift', 'Objective-C']
-    @$scope.userId = @$stateParams.userId
-    @$scope.user = BoltApi.getProfile(@$scope.userId)
+    profile = BoltApi.getProfile($stateParams.userId)
+    profile.then (data)->
+      $scope.user = data.user
+      $scope.posts = data.posts
 
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
 angular.module("boltWebApp").controller "UserCtrl", UserCtrl
