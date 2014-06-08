@@ -5,16 +5,25 @@ angular.module("boltWebApp.services", ['restangular'])
 .factory "BoltApi", (Restangular)->
 
   getUser: (userId)->
-  	Restangular.one("users", userId).get()
+    Restangular.one("users", userId).get()
 
   getProfile: (userId)->
     Restangular.one("users", userId).one("profile").get()
 
   getFollowers: (userId)->
-  	Restangular.one("users", userId).one("followers").get()
+    Restangular.one("users", userId).one("followers").get()
 
   getFollowing: (userId)->
-  	Restangular.one("users", userId).one("following").get()
+    Restangular.one("users", userId).one("following").get()
+
+  getConversationList: (userId)->
+    Restangular.one("users", userId).one("conversations").get()
+
+  getConversation: (userId, conversationId)->
+    Restangular.one("users", userId).one("conversations", conversationId).get()
+
+
+
 
 
 

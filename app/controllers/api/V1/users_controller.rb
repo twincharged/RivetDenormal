@@ -58,6 +58,11 @@ class UsersController < ApplicationController
   def near_users
   end
 
+  def conversations
+    @conversations = @user.conversations
+    respond_with({conversations: @conversations})
+  end
+
 private
 
   def set_user

@@ -10,11 +10,8 @@ Rails.application.routes.draw do
           get '/profile', to: 'users#profile'
           get '/following', to: 'users#following'
           get '/followers', to: 'users#followers'
-          resources :conversations do
-            member do
-             get '/messages', to: 'conversations#show'
-            end
-          end
+          get '/conversations', to: 'users#conversations'
+          # resources :conversations
         end
       end
         # devise_scope :user do
