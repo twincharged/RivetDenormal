@@ -1,5 +1,29 @@
 <div ui-view class="header">
-User view..... {{user}}
+User view..... 
+</br>
+{{user}}
 </div>
-<div>Double...? : {{posts}}</div>
 <br/>
+<div>Double...? 
+<br/>
+Activity:
+  <li ng-repeat="post in posts">
+    <div>{{post}}</div>
+  </li>
+
+</div>
+<br/>
+<button ng-click="getEvents(user.id)">Events</button>
+  <li ng-repeat="event in events">
+    <div>{{event}}</div>
+  </li>
+<br/>
+<button ng-click="getFollowers(user.id)">Followers</button>
+  <li ng-repeat="follower in followers">
+    <div>{{follower}}</div>
+  </li>
+
+<button ng-click="getFollowing(user.id)">Following</button>
+  <li ng-repeat="followed in following">
+    <div>{{followed}}</div>
+  </li>

@@ -10,6 +10,9 @@ angular.module("boltWebApp.services", ['restangular'])
   getProfile: (userId)->
     Restangular.one("users", userId).one("profile").get()
 
+  getEvents: (userId)->
+    Restangular.one("users", userId).one("events").get()
+
   getFollowers: (userId)->
     Restangular.one("users", userId).one("followers").get()
 

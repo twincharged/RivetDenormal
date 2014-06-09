@@ -11,7 +11,7 @@ Rails.application.routes.draw do
           get '/following', to: 'users#following'
           get '/followers', to: 'users#followers'
           get '/conversations', to: 'users#conversations'
-          # resources :conversations
+          get '/events', to: 'users#events'
         end
       end
         # devise_scope :user do
