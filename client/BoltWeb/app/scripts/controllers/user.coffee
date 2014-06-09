@@ -10,17 +10,17 @@ class UserCtrl
     $scope.getEvents = (userId)->
       BoltApi.getEvents(userId).then (data)->
         $scope.events = data.events
-        $scope.events = ["none"] unless $scope.events.length
+        $scope.events = ["none"] if _.isEmpty($scope.events)
 
     $scope.getFollowers = (userId)->
       BoltApi.getFollowers(userId).then (data)->
         $scope.followers = data.followers
-        $scope.followers = ["none"] unless $scope.followers.length
+        $scope.followers = ["none"] if _.isEmpty($scope.events)
 
     $scope.getFollowing = (userId)->
       BoltApi.getFollowing(userId).then (data)->
         $scope.following = data.following
-        $scope.following = ["none"] unless $scope.following.length
+        $scope.following = ["none"] if _.isEmpty($scope.events)
 
 
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
