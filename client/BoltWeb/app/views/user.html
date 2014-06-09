@@ -1,17 +1,13 @@
 <div ui-view class="header">
 User view..... 
 </br>
-{{user}}
-</div>
-<br/>
-<div>Double...? 
+  {{user}}
 <br/>
 Activity:
   <li ng-repeat="post in posts">
     <div>{{post}}</div>
   </li>
 
-</div>
 <br/>
 <button ng-click="getEvents(user.id)">Events</button>
   <li ng-repeat="event in events">
@@ -32,3 +28,4 @@ Activity:
   <li ng-repeat="followed in following">
     <div>{{followed}}</div>
   </li>
+</div>

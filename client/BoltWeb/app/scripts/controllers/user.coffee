@@ -15,12 +15,12 @@ class UserCtrl
     $scope.getFollowers = (userId)->
       BoltApi.getFollowers(userId).then (data)->
         $scope.followers = data.followers
-        $scope.followers = ["none"] if _.isEmpty($scope.events)
+        $scope.followers = ["none"] if _.isEmpty($scope.followers)
 
     $scope.getFollowing = (userId)->
       BoltApi.getFollowing(userId).then (data)->
         $scope.following = data.following
-        $scope.following = ["none"] if _.isEmpty($scope.events)
+        $scope.following = ["none"] if _.isEmpty($scope.following)
 
     $scope.getConversations = (userId)->
       BoltApi.getConversations(userId).then (data)->
