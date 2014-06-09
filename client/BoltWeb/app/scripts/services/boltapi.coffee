@@ -19,7 +19,7 @@ angular.module("boltWebApp.services", ['restangular'])
   getFollowing: (userId)->
     Restangular.one("users", userId).one("following").get()
 
-  getConversationList: (userId)->
+  getConversations: (userId)->
     Restangular.one("users", userId).one("conversations").get()
 
   getConversation: (userId, conversationId)->

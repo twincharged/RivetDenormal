@@ -45,12 +45,6 @@ class UsersController < ApplicationController
     respond_with(@response)
   end
 
-  def events
-    @events = @user.events
-    @response = {events: @events}
-    respond_with(@response)
-  end
-
   def followers
     @users = @user.followers
     respond_with({followers: @users})
@@ -62,11 +56,6 @@ class UsersController < ApplicationController
   end
 
   def near_users
-  end
-
-  def conversations
-    @conversations = @user.conversations
-    respond_with({conversations: @conversations})
   end
 
 private

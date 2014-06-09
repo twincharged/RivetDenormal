@@ -10,8 +10,8 @@ Rails.application.routes.draw do
           get '/profile', to: 'users#profile'
           get '/following', to: 'users#following'
           get '/followers', to: 'users#followers'
-          get '/conversations', to: 'users#conversations'
-          get '/events', to: 'users#events'
+          get '/conversations', to: 'conversations#user_conversations'
+          get '/events', to: 'events#user_events'
         end
       end
         # devise_scope :user do

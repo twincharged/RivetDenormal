@@ -22,6 +22,10 @@ class UserCtrl
         $scope.following = data.following
         $scope.following = ["none"] if _.isEmpty($scope.events)
 
+    $scope.getConversations = (userId)->
+      BoltApi.getConversations(userId).then (data)->
+        $scope.conversations = data.conversations
+        $scope.conversations = ["none"] if _.isEmpty($scope.conversations)
 
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
 angular.module("boltWebApp").controller "UserCtrl", UserCtrl

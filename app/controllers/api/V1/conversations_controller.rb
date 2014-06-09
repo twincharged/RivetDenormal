@@ -5,7 +5,7 @@ module Api
 class ConversationsController < ApplicationController
   respond_to :json
   before_action :set_user, except: []
-  before_action :set_conv, except: [:create, :index]
+  # before_action :set_conv, except: [:create, :index]
   # before_action :authenticate_user! #, except: [:new, :create, :show, :index]
 
   def create
@@ -16,12 +16,12 @@ class ConversationsController < ApplicationController
     @user.send_message!(@conv.id, new_message_attrs)
   end
 
-  def index
-    @convos = @user.conversations
-    respond_with(@convos)
+  def user_conversations
+    @conversations = @user.conversations
+    respond_with({conversations: @conversations})
   end
 
-  def show
+  def conversation
     @mess = @conv.messages
     @user = @conv.owner
     @cu = @conv.conversation_users
@@ -31,9 +31,9 @@ class ConversationsController < ApplicationController
 
 private
 
-  def set_conv
-    @conv = Conversation.find(params[:id])
-  end
+  # def set_conv
+  #   @conv = Conversation.find(params[:id])
+  # end
 
   def set_user
     @user = User.find(params[:id])

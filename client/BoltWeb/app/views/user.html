@@ -18,6 +18,11 @@ Activity:
     <div>{{event}}</div>
   </li>
 <br/>
+<button ng-click="getConversations(user.id)">Conversations</button>
+  <li ng-repeat="convo in conversations">
+    <div>{{convo}}</div>
+  </li>
+<br/>
 <button ng-click="getFollowers(user.id)">Followers</button>
   <li ng-repeat="follower in followers">
     <div>{{follower}}</div>
