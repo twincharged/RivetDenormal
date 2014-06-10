@@ -2,4 +2,4 @@ To use this repo: clone, start up Redis and Postgres, run migrations. Make sure 
 
 The server is now running solely on the sub-frameworks ActiveRecord and ActionController with the intention of bringing ActionMailer on board at a later date. This is because the server is agnostic towards clients, only spitting out a JSON API.
 
-JavaScript's asynchronicity is so weird. Looking more in depth into related libraries such as Q.
+Was almost successful at implementing Faye in Rails and Angular. Everything was working nicely, then I did something that started throwing some weird JS errors involving null databinding and insertBefore functions. I belive the problem started happening when I switched from WEBbrick to Thin. Sigh... unfortunately I will pull from my last push and wipe the errors along with the Faye progress.
