@@ -14,12 +14,12 @@ class EventsController < ApplicationController
 
   def added_user_events
     @added = @user.added_events
-    respond_with({added_events: @added})
+    respond_with({addedEvents: @added})
   end
 
   def invited_user_events
     @invited = @user.invited_events
-    respond_with({invited_events: @invited})
+    respond_with({invitedEvents: @invited})
   end
 
 private

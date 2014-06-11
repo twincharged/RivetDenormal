@@ -8,44 +8,33 @@ class UserCtrl
       $scope.posts = data.posts
 
     $scope.getEvents = (userId)->
-      BoltApi.getEvents(userId).then (data)->
-        $scope.events = data.events
-        $scope.events.push("none") if _.isEmpty($scope.events)
+      getData(userId, "events")
 
     $scope.getAddedEvents = (userId)->
-      BoltApi.getAddedEvents(userId).then (data)->
-        $scope.addedEvents = data.added_events
-        $scope.addedEvents.push("none") if _.isEmpty($scope.addedEvents)
+      getData(userId, "addedEvents")
 
     $scope.getInvitedEvents = (userId)->
-      BoltApi.getInvitedEvents(userId).then (data)->
-        $scope.invitedEvents = data.invited_events
-        $scope.invitedEvents.push("none") if _.isEmpty($scope.invitedEvents)
+      getData(userId, "invitedEvents")
 
     $scope.getFollowers = (userId)->
-      BoltApi.getFollowers(userId).then (data)->
-        $scope.followers = data.followers
-        $scope.followers.push("none") if _.isEmpty($scope.followers)
+      getData(userId, "followers")
 
     $scope.getFollowing = (userId)->
-      BoltApi.getFollowing(userId).then (data)->
-        $scope.following = data.following
-        $scope.following.push("none") if _.isEmpty($scope.following)
+      getData(userId, "following")
 
     $scope.getConversations = (userId)->
-      BoltApi.getConversations(userId).then (data)->
-        $scope.conversations = data.conversations
-        $scope.conversations.push("none") if _.isEmpty($scope.conversations)
+      getData(userId, "conversations")
 
     $scope.getGroups = (userId)->
-      BoltApi.getGroups(userId).then (data)->
-        $scope.groups = data.groups
-        $scope.groups.push("none") if _.isEmpty($scope.groups)
+      getData(userId, "groups")
 
     $scope.getBlockedUserIds = (userId)->
-      BoltApi.getBlockedUserIds(userId).then (data)->
-        $scope.blockedUserIds = data.blocked_user_ids
-        $scope.blockedUserIds.push("none") if _.isEmpty($scope.blockedUserIds)
+      getData(userId, "blockedUserIds")
+
+    getData = (userId, fieldName)->
+      eval("BoltApi.get#{fieldName.capitalize()}(#{userId})").then (data)->
+        $scope[fieldName] = data[fieldName]
+        $scope[fieldName].push("none") if _.isEmpty($scope[fieldName])
 
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
 angular.module("boltWebApp").controller "UserCtrl", UserCtrl
