@@ -25,11 +25,35 @@ angular.module("boltWebApp.services", ['restangular'])
   getConversation: (userId, conversationId)->
     Restangular.one("users", userId).one("conversations", conversationId).get()
 
+  getGroups: (userId)->
+    Restangular.one("users", userId).one("groups").get()
 
+  getGroup: (userId, groupId)->
+    Restangular.one("users", userId).one("groups", groupId).get()
 
+  getAddedEvents: (userId)->
+    Restangular.one("users", userId).one("added_events").get()
 
+  getInvitedEvents: (userId)->
+    Restangular.one("users", userId).one("invited_events").get()
 
+  getEvent: (eventId)->
+    Restangular.one("events", eventId).get()
 
+  getPost: (postId)->
+    Restangular.one("posts", eventId).get()
+
+  getSettings: (userId)->
+    Restangular.one("users", userId).one("settings").get()
+
+  getFollowerCount: (userId)->
+    Restangular.one("users", userId).one("follower_count").get()
+
+  getFollowingCount: (userId)->
+    Restangular.one("users", userId).one("following_count").get()
+
+  getBlockedUserIds: (userId)->
+    Restangular.one("users", userId).one("blocked_user_ids").get()
 
 
 

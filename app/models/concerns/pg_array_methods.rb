@@ -53,7 +53,7 @@ protected
 
 
   def remove_mult(field, values)
-    # not supported with simple psql function. its possible, but its ugly af
+    # not supported with simple psql function. it's possible, but its ugly af
   end
 
 
@@ -71,7 +71,7 @@ protected
 
 
 
-  def relate_with_array(field, related_class, limit=10)
+  def relate_with_array(field, related_class, limit=100)
     klass = self.class.name.underscore
     klass = UserRelation.name.underscore if self.is_a?(User)
     related_class.find_by_sql("SELECT * FROM #{related_class.to_s.downcase.pluralize}
