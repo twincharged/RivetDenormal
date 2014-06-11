@@ -8,8 +8,8 @@ default: &default
 development:
   <<: *default
   database: Bolt_development
-  # allow_concurrency: true
-  pool: 5
+  allow_concurrency: true
+  pool: 25
 
 
 test:

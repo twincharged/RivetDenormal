@@ -1,8 +1,8 @@
 CarrierWave.configure do |config|
   config.fog_credentials = {
     provider:                 'AWS',
-    aws_access_key_id:        'YOUR_KEY_HERE',
-    aws_secret_access_key:    'YOUR_SUPER_SECRET_KEY_HERE',
+    aws_access_key_id:        'AKIAJHWM2Z4RD4YWD2EA',
+    aws_secret_access_key:    'uPbBXOz1oU5IngCrHtbJ0PGu0Q5R0kdLthftEl8Y',
     region:                   'us-west-1',
     # host:                     'dev',
     # endpoint:                 'boltdev.s3-website-us-west-1.amazonaws.com'

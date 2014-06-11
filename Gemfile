@@ -23,6 +23,8 @@ gem 'fog'
 
 gem 'rack-cors', require: 'rack/cors'
 
+gem 'thin'
+
 group :development, :test do 
   gem 'rspec-rails'
   gem 'factory_girl_rails'

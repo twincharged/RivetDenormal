@@ -5,13 +5,16 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: :json} do
     namespace :v1 do
-      resources :users do
+      resources :users do   # param: :username  # add this to user resources to index users & their routes by their username
         member do
           get '/profile', to: 'users#profile'
           get '/following', to: 'users#following'
           get '/followers', to: 'users#followers'
           get '/conversations', to: 'conversations#user_conversations'
+          get '/groups', to: 'groups#user_groups'
           get '/events', to: 'events#user_events'
+          get '/added_events', to: 'events#added_user_events'
+          get '/invited_events', to: 'events#invited_user_events'
         end
       end
         # devise_scope :user do
