@@ -32,7 +32,7 @@ class UserCtrl
       getData(userId, "blockedUserIds")
 
     getData = (userId, fieldName)->
-      eval("BoltApi.get#{fieldName.capitalize()}(#{userId})").then (data)->
+      BoltApi['get' + fieldName.capitalize()](userId).then (data)->
         $scope[fieldName] = data[fieldName]
         $scope[fieldName].push("none") if _.isEmpty($scope[fieldName])
 
