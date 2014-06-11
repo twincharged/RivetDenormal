@@ -20,11 +20,11 @@ angular
     .state 'users',
       url: '/users'
       abstract: true
-      templateUrl: 'views/user.html'
+      templateUrl: 'views/users.html'
 
     .state 'users.userId',
       url: '/:userId'
-      templateUrl: 'views/user.html'
+      templateUrl: 'views/users.userId.html'
       controller: 'UserCtrl'
 
 .config (RestangularProvider)->
