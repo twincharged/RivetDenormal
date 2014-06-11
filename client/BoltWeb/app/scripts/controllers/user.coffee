@@ -42,5 +42,10 @@ class UserCtrl
         $scope.groups = data.groups
         $scope.groups.push("none") if _.isEmpty($scope.groups)
 
+    $scope.getBlockedUserIds = (userId)->
+      BoltApi.getBlockedUserIds(userId).then (data)->
+        $scope.blockedUserIds = data.blocked_user_ids
+        $scope.blockedUserIds.push("none") if _.isEmpty($scope.blockedUserIds)
+
 UserCtrl.$inject = ["$scope", '$stateParams', 'BoltApi']
 angular.module("boltWebApp").controller "UserCtrl", UserCtrl

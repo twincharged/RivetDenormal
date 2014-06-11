@@ -68,16 +68,20 @@ class User < ActiveRecord::Base
     # self.relations.pluck(:followed_ids)
   end
 
+  def blocked_user_ids
+    self.redget(:blocked_user_ids)
+  end
+
+  def flagger_ids
+    self.get(:flagger_ids) #blech
+  end
+  
   def follower_count
     self.follower_ids.count
   end
 
   def followed_count
     self.followed_ids.count
-  end
-
-  def flagger_ids
-    self.get(:flagger_ids) #blech
   end
 
   def relations
@@ -236,10 +240,6 @@ class User < ActiveRecord::Base
 
   def send_feedback!(attrs={})
     Feedback.create(user_id: self.id, subject: attrs[:subject], body: attrs[:body])
-  end
-
-  def blocked_user_ids
-    self.redget(:blocked_user_ids)
   end
 
 

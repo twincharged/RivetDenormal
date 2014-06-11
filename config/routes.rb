@@ -15,6 +15,7 @@ Rails.application.routes.draw do
           get '/events', to: 'events#user_events'
           get '/added_events', to: 'events#added_user_events'
           get '/invited_events', to: 'events#invited_user_events'
+          get '/blocked_user_ids', to: 'users#blocked_user_ids'
         end
       end
         # devise_scope :user do

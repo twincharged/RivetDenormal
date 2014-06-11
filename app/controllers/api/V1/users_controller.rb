@@ -58,6 +58,11 @@ class UsersController < ApplicationController
   def near_users
   end
 
+  def blocked_user_ids
+    @blocked = @user.blocked_user_ids
+    respond_with({blocked_user_ids: @blocked})
+  end
+
 private
 
   def set_user
