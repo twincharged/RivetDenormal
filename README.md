@@ -6,7 +6,7 @@ Updates:
 
 The server is now running solely on the sub-frameworks ActiveRecord and ActionController with the intention of bringing ActionMailer on board at a later date. This is because the server is agnostic towards clients, only spitting out a JSON API.
 
-Was almost successful at implementing Faye in Rails and Angular. Everything was working nicely, then I did something that started throwing some weird JS errors involving null databinding and insertBefore functions. I belive the problem started happening when I switched from WEBbrick to Thin. Sigh... unfortunately I will pull from my last push and wipe the errors along with the Faye progress.
+Was almost successful at implementing Faye in Rails and Angular. Everything was working nicely, then I did something that started throwing some weird JS errors involving null databinding and insertBefore functions. I belive the problem started happening when I switched from Webrick to Thin. Sigh... unfortunately I will pull from my last push and wipe the errors along with the Faye progress.
 
 The Rails/PG/Redis query response time are extraordinary. I'm clocking -on average- 3-4 ms response time from the SERVER for getting arrays of objects (users, posts, events, etc.). That's not the response time from just the databases, but for the entire backend. And I'm running a humble dual-core MacBook Air (2013). So happy right now.
 
