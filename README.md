@@ -10,4 +10,4 @@ Was almost successful at implementing Faye in Rails and Angular. Everything was 
 
 The Rails/PG/Redis query response time are extraordinary. I'm clocking -on average- 3-4 ms response time from the SERVER for getting arrays of objects (users, posts, events, etc.). That's not the response time from just the databases, but for the entire backend. And I'm running a humble dual-core MacBook Air (2013). So happy right now.
 
-It appears Heroku just added true support for websockets a week ago. Interesting...
+It appears Heroku just added true support for websockets a week ago. Interesting. I'm fascinated with Co.
