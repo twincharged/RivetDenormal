@@ -7,19 +7,19 @@ default: &default
 
 development:
   <<: *default
-  database: Bolt_development
+  database: boltdev
   allow_concurrency: true
   pool: 25
 
 
 test:
   <<: *default
-  database: Bolt_test
+  database: bolttest
   allow_concurrency: true
   pool: 25
 
 production:
   <<: *default
-  database: Bolt_production
+  database: boltproduction
   username: Bolt
   password: <%= ENV['BOLT_DATABASE_PASSWORD'] %>
