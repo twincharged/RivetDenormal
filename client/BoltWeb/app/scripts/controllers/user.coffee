@@ -31,6 +31,9 @@ class UserCtrl
     $scope.getBlockedUserIds = (userId)->
       getData(userId, "blockedUserIds")
 
+    $scope.getSettings = (userId)->
+      getData(userId, "settings")
+
     getData = (userId, fieldName)->
       BoltApi['get' + fieldName.capitalize()](userId).then (data)->
         $scope[fieldName] = data[fieldName]

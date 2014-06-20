@@ -54,13 +54,3 @@ angular.module("boltWebApp.services", ['restangular'])
 
   getBlockedUserIds: (userId)->
     Restangular.one("users", userId).one("blocked_user_ids").get()
-
-
-
-
-
-    # deferred = $q.defer()
-    # Restangular.one("users", userId).one("profile").get().then (data)->   #.$object
-      # deferred.resolve(data)
-      # deferred.promise
-      # console.log data
