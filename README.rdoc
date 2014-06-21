@@ -37,6 +37,7 @@ Table of Contents:
 
 * Important
 * To Do
+* Changing Rubies/servers
 * Completed Relations
 * Persistence Documentation
 * UserRelation Documentation
@@ -51,7 +52,7 @@ Table of Contents:
 _______________________________________________________________________________
 |** Redis:
 |
-|-When entering test evironment (running specs too) or calling
+|-When entering test environment (running specs too) or calling
 | Redis.new#flushdb, all environments (development, test, production)
 | are flushed.
 |
@@ -122,7 +123,7 @@ _______________________________________________________________________________
 |"activerecord-jdbcpostgresql-adapter", trade "thin" for "puma", hash out
 |"debugger", add "rubygems", and add "ruby '1.9.3', :engine => 'jruby',
 |:engine_version => '1.7.10'". Next go to Bolt/app/models/concerns and open
-|the PGArrayMethods file. Hash out this line in every method:
+|the PGArrayMethods file. Hash out this line in the "ex" and "get" methods:
 | return false unless query.is_a?(PG::Result)
 |And for the line below that one, change this chain:
 | array = ....gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
@@ -130,6 +131,11 @@ _______________________________________________________________________________
 | array = ....uniq
 |Obviously make sure to switch your Ruby to "jruby-1.7.10".
 |Then launch the server by running "rails s Puma" from the command line.
+|
+|To improve JRuby start up and AR performance, pass these options
+|to JRuby through bash: 
+| export JRUBY_OPTS="-Xcompile.invokedynamic=false -J-XX:+TieredCompilation
+|  -J-XX:TieredStopAtLevel=1 -J-noverify -Xcompile.mode=OFF"
 |______________________________________________________________________________
 |** JRuby/Puma to Ruby/Thin
 |
