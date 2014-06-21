@@ -11,8 +11,8 @@ protected
                                            SET #{field.to_s} = array_append(#{field.to_s}, #{value})
                                            WHERE id = #{self.id}
                                            RETURNING #{field.to_s}")
-    return false unless query.is_a?(PG::Result)
-    array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
+    # return false unless query.is_a?(PG::Result)
+    array = query[0][field.to_s].uniq #.gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
     return {field.to_sym => array} if self.is_a?(User)
     self.send("#{field}=", array)
     return self
@@ -27,8 +27,8 @@ protected
                                            SET #{field.to_s} = array_cat(#{field.to_s}, ARRAY#{values})
                                            WHERE id = #{self.id}
                                            RETURNING #{field.to_s}")
-    return false unless query.is_a?(PG::Result)
-    array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
+    # return false unless query.is_a?(PG::Result)
+    array = query[0][field.to_s].uniq #.gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
     return {field.to_sym => array} if self.is_a?(User)
     self.send("#{field}=", array)
     return self
@@ -43,8 +43,8 @@ protected
                                            SET #{field.to_s} = array_remove(#{field.to_s}, #{value}) 
                                            WHERE id = #{self.id}
                                            RETURNING #{field.to_s}")
-    return false unless query.is_a?(PG::Result)
-    array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
+    # return false unless query.is_a?(PG::Result)
+    array = query[0][field.to_s].uniq #.gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
     return {field.to_sym => array} if self.is_a?(User)
     self.send("#{field}=", array)
     return self
@@ -65,8 +65,8 @@ protected
     query = self.class.connection.execute("SELECT #{field}
                                            FROM #{klass.to_s.downcase.pluralize}
                                            WHERE id = #{self.id}")
-    return false unless query.is_a?(PG::Result)
-    array = query[0][field.to_s].gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
+    # return false unless query.is_a?(PG::Result)
+    array = query[0][field.to_s].uniq #.gsub(/[{}]/, "{" => "", "}" => "").split(",").map(&:to_i).uniq
   end
 
 

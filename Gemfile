@@ -1,10 +1,13 @@
 source 'https://rubygems.org'
 
+require 'rubygems'
+
 gem 'rails-api'
 gem 'activerecord'
 gem 'actionmailer'
 
-gem 'pg'
+# gem 'pg'
+gem 'activerecord-jdbcpostgresql-adapter'
 gem 'surus'
 
 gem 'pry'
@@ -23,16 +26,20 @@ gem 'fog'
 
 gem 'rack-cors', require: 'rack/cors'
 
-gem 'thin'
+# gem 'thin'
+gem 'puma'
 
 group :development, :test do 
   gem 'rspec-rails'
   gem 'factory_girl_rails'
   gem 'faker'
   gem 'database_cleaner'
-  gem 'debugger'
+  # gem 'debugger'
   gem 'shoulda-matchers'
 end
+
+ruby '1.9.3', :engine => 'jruby', :engine_version => '1.7.10'
+
 
 # gem 'spring', group: :development
 
