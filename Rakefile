@@ -4,3 +4,7 @@
 require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
+
+task :log => :environment do
+  ActiveRecord::Base.logger = Logger.new(STDOUT)
+end
