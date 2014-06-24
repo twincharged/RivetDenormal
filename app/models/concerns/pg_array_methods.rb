@@ -73,6 +73,7 @@ protected
 ##### Not for array:
 
   module PGClassMethods
+  protected
     def find_stub(id)
       if id.is_a?(Integer)
         self.find_by_sql("SELECT id, avatar, username, fullname

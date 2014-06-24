@@ -59,13 +59,10 @@ _______________________________________________________________________________
 |______________________________________________________________________________
 |** Specs:
 |
-|-Each spec run has a very small chance of creating a user with non-unique
-| fields that should be unique. Aside from using UUIDs or ids, this is hard to
-| eliminate. Solution is to re-run the specs.
 |-If spec fails with the reason 
 | "#class can't find #instance with id of _ or _", it is most likely a
 | mismatch between Postgres and Redis. This is nearly impossible, but if
-| it happens, flush and reset both databases, then run specs again.
+| it happens, flush and reset both test databases, then run specs again.
 |
 |______________________________________________________________________________
 

@@ -1,4 +1,5 @@
 class CreateUsers < ActiveRecord::Migration
+
   def change
     create_table :users do |t|
       t.string  :username
@@ -14,6 +15,10 @@ class CreateUsers < ActiveRecord::Migration
       t.string  :backdrop
 
       t.timestamps
+
+      execute "ALTER DATABASE boltdev SET synchronous_commit TO OFF"
+      execute "ALTER DATABASE bolttest SET synchronous_commit TO OFF"
+      # execute "ALTER DATABASE boltproduction SET synchronous_commit TO OFF"
     end
     add_index :users, :university
   end
