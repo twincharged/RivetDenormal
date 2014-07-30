@@ -165,17 +165,8 @@ class User < ActiveRecord::Base
     return self.username
   end
 
-  def post_feed1
+  def post_feed
     Post.where(user_id: self.followed_ids).limit(10)
-  end
-  
-  # these feeds are nonworking due to lack of geolocation function.
-
-  def post_feed2(limit=10)
-    Post.find_by_sql("SELECT * FROM posts WHERE user_id 
-                      IN 
-                     (SELECT unnest(followed_ids) FROM user_relations WHERE id = #{self.id})
-                      LIMIT #{limit}")
   end
 
 ###
