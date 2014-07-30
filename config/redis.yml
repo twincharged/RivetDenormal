@@ -4,13 +4,13 @@ default:
 
 development:
   db: 0
-  namespace: bolt_dev
+  namespace: rivet_dev
 
 test:
   db: 1
-  namespace: bolt_test
+  namespace: rivet_test
 
 production:
   db: 2
   host: 1432.1432.1324
-  namespace: bolt_production
+  namespace: rivet_production

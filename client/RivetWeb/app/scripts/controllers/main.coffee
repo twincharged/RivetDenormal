@@ -6,4 +6,4 @@ class MainCtrl
     $scope.langs = ['Ruby', 'CS', 'Python']
 
 MainCtrl.$inject = ["$scope"]
-angular.module("boltWebApp").controller "MainCtrl", MainCtrl
+angular.module("rivetWebApp").controller "MainCtrl", MainCtrl

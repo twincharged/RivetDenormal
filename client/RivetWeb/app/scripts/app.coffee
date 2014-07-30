@@ -1,11 +1,11 @@
 'use strict'
 
 angular
-  .module('boltWebApp', [
+  .module('rivetWebApp', [
     'ngCookies',
     'ngSanitize',
     'ui.router',
-    'boltWebApp.services',
+    'rivetWebApp.services',
     'restangular'
   ])
 

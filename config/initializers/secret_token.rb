@@ -16,4 +16,4 @@
 # Using secret_token for rails3 compatibility. Change to secret_key_base
 # to avoid deprecation warning.
 # Can be safely removed in a rails3 api-only application.
-Bolt::Application.config.secret_token = '190580dc5510dc4aed3bb505d293803ce85d5664f76b5515f7ee57863abd3d86029d4953db7b293f035efc40bdf92d558df4ad6dbc3c4479788be9047b57bca1'
+Rivet::Application.config.secret_token = '190580dc5510dc4aed3bb50d5d293803ce85d5664f76b5515f7ee57863abd3d86029d4953db7b293f035efc40bdf92d558df4ad6dbc3c4479788be9047b57bca1'

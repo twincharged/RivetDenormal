@@ -10,7 +10,7 @@ class CreateComments < ActiveRecord::Migration
       t.integer    :tagged_user_ids, array: true, default: []
       t.integer    :flagger_ids, array: true, default: []
       
-      # t.integer :sparker_ids, array: true, default: []          #=> Redis
+      # t.integer :liker_ids, array: true, default: []          #=> Redis
 
       t.timestamps
     end

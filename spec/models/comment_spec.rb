@@ -14,7 +14,7 @@ describe Comment do
   	it { should validate_presence_of(:user_id) }
   	it { should validate_presence_of(:threadable_id) }
   	it { should validate_presence_of(:threadable_type) }
-  	it { should ensure_inclusion_of(:threadable_type).in_array(%w( Post Event )) }
+  	it { should ensure_inclusion_of(:threadable_type).in_array(%w( Post )) }
   	it { should validate_presence_of(:body) }
   	it { should ensure_length_of(:body) }
 
@@ -27,10 +27,10 @@ describe Comment do
       FactoryGirl.create(:post_comment).user.should_not be_nil
     end
 
-    it "should respond to sparks" do
+    it "should respond to likes" do
       comment = FactoryGirl.create(:post_comment)
-      @user1.spark!(comment)
-      comment.sparker_ids.should include(@user1.id)
+      @user1.like!(comment)
+      comment.liker_ids.should include(@user1.id)
     end
 
   end
@@ -44,7 +44,6 @@ describe Comment do
 
   	it "should require threadable" do
   	  FactoryGirl.build(:post_comment, threadable_type: nil, threadable_id: nil).should_not be_valid
-  	  FactoryGirl.build(:event_comment, threadable_type: nil, threadable_id: nil).should_not be_valid
   	end
 
   	it "should require body" do
@@ -57,7 +56,6 @@ describe Comment do
 
   	it "should manually create comment" do
   	  FactoryGirl.build(:post_comment).should be_valid
-  	  FactoryGirl.build(:event_comment).should be_valid
   	end
 
     it "should methodically create post comment" do
@@ -68,12 +66,6 @@ describe Comment do
       post.comments_count.should == 1
     end
 
-    it "should methodically create event comment" do
-      user = FactoryGirl.create(:user)
-      event = FactoryGirl.create(:private_event)
-      event.comments_count.should == 0
-      user.create_comment!(event, body: "I'm another comment!")
-      event.comments_count.should == 1
-    end
+
   end
 end

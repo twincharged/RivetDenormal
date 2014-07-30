@@ -218,18 +218,6 @@ describe User do
       @user1.posts.should_not include(post)
     end
 
-    it "should create user <~> event" do
-      event = @user1.create_event!(FakerAtts.public_event)
-      @user1.events.should include(event)
-      event.user.should == @user1
-    end
-
-    it "should remove user <~> event" do
-      event = @user1.create_event!(FakerAtts.private_event)
-      event.destroy
-      @user1.events.should_not include(event)
-    end
-
     it "should create user <~> comment" do
       post = FactoryGirl.create(:post)
       comment = @user1.create_comment!(post , FakerAtts.comment)
@@ -241,89 +229,23 @@ describe User do
       group.group_users.should include(@user4, @user2)
     end
 
-    it "should create user <~sparks~> post" do
+    it "should create user <~likes~> post" do
       post = @user5.create_post!(FakerAtts.public_post)
-      @user2.spark!(post)
-      post.sparkers.should include(@user2)
+      @user2.like!(post)
+      post.likers.should include(@user2)
     end
 
-    it "should create user <~sparks~> event" do
-      event = @user3.create_event!(FakerAtts.public_event)
-      @user4.spark!(event)
-      event.sparkers.should include(@user4)
-    end
-
-    it "should create user <~sparks~> comment" do
+    it "should create user <~likes~> comment" do
       comment = @user3.create_comment!(FactoryGirl.create(:post), body: "Testing... 1, 2, 3....")
-      @user4.spark!(comment)
-      comment.sparkers.should include(@user4)
+      @user4.like!(comment)
+      comment.likers.should include(@user4)
     end
 
-    it "should remove user <~sparks~> post" do
+    it "should remove user <~likes~> post" do
       post = @user5.create_post!(FakerAtts.public_post)
-      @user2.spark!(post)
-      @user2.unspark!(post)
-      post.sparkers.should_not include(@user2)
-    end
-
-    it "should remove user <~sparks~> event" do
-      event = @user3.create_event!(FakerAtts.public_event)
-      @user4.spark!(event)
-      @user4.unspark!(event)
-      event.sparkers.should_not include(@user4)
-    end
-
-    it "should remove user <~sparks~> comment" do
-      comment = @user3.create_comment!(FactoryGirl.create(:post), body: "Testing... 1, 2, 3....")
-      @user4.spark!(comment)
-      @user4.unspark!(comment)
-      comment.sparkers.should_not include(@user4)
-    end
-
-    it "should add public_event" do
-      event = @user3.create_event!(FakerAtts.public_event)
-      @user4.add_event!(event)
-      event.added_users.should include(@user4)
-      @user4.added_events.should include(event)
-    end
-
-    it "should add private_event" do
-      event = @user3.create_event!(FakerAtts.private_event)
-      event.invite!([@user4])
-      event.added_users.should_not include(@user4)
-      event.invited_users.should include(@user4)
-      @user4.added_events.should_not include(event)
-      @user4.invited_events.should include(event)
-      @user4.add_event!(event)
-      @user4.added_events.should include(event)
-      @user4.invited_events.should_not include(event)
-      event.added_users.should include(@user4)
-      event.invited_users.should_not include(@user4)
-    end
-
-    it "should dismiss public_event" do
-      event = @user3.create_event!(FakerAtts.public_event)
-      @user4.add_event!(event)
-      @user4.remove_event!(event)
-      event.added_users.should_not include(@user4)
-      @user4.added_events.should_not include(event)
-    end
-
-    it "should dismiss private_event" do
-      event = @user3.create_event!(FakerAtts.private_event)
-      event.invite!([@user4])
-      @user4.add_event!(event)
-      @user4.remove_event!(event)
-      event.invited_users.should_not include(@user4)
-      event.added_users.should_not include(@user4)
-      @user4.invited_events.should_not include(event)
-      @user4.added_events.should_not include(event)
-    end
-
-    it "should flag event" do
-      event = @user3.create_event!(FakerAtts.public_event)
-      @user4.flag!(event)
-      event.flagger_ids.should include(@user4.id)
+      @user2.like!(post)
+      @user2.unlike!(post)
+      post.likers.should_not include(@user2)
     end
 
     it "should flag post" do

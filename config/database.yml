@@ -7,19 +7,19 @@ default: &default
 
 development:
   <<: *default
-  database: boltdev
+  database: rivetdev
   allow_concurrency: true
   pool: 25
 
 
 test:
   <<: *default
-  database: bolttest
+  database: rivettest
   allow_concurrency: true
   pool: 25
 
 production:
   <<: *default
-  database: boltproduction
-  username: Bolt
-  password: <%= ENV['BOLT_DATABASE_PASSWORD'] %>
+  database: rivetproduction
+  username: Rivet
+  password: <%= ENV['RIVET_DATABASE_PASSWORD'] %>

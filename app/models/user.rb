@@ -14,17 +14,13 @@ class User < ActiveRecord::Base
   validates :fullname, format: {with: /\A[a-z ,.'-]+\z/i}, length: {minimum: 3, maximum: 32}, allow_nil: true
   validates :gender, inclusion: {in: %w( MALE FEMALE )}, allow_nil: true
   validate  :verify_email_not_banned
-  before_save  :extract_university, :squeeze_fullname
+  before_save  :squeeze_fullname
   after_create :create_settings_and_relations
 
 ##### Relations
 
   def posts
     self.relate_with_array(:owned_post_ids, Post)
-  end
-
-  def events
-    self.relate_with_array(:owned_event_ids, Event)
   end
 
   def followers
@@ -45,14 +41,6 @@ class User < ActiveRecord::Base
 
   def received_messages(conversation)
     Message.find(conversation.message_ids)
-  end
-
-  def added_events
-    self.relate_with_array(:added_event_ids, Event)
-  end
-
-  def invited_events
-    self.relate_with_array(:invited_event_ids, Event)
   end
 
   def settings
@@ -111,12 +99,12 @@ class User < ActiveRecord::Base
     end
   end
 
-  def spark!(poly)
-    poly.redappend(:sparker_ids, self.id)
+  def like!(poly)
+    poly.redappend(:liker_ids, self.id)
   end
 
-  def unspark!(poly)
-    poly.redremove(:sparker_ids, self.id)
+  def unlike!(poly)
+    poly.redremove(:liker_ids, self.id)
   end
 
   def create_post!(attrs={})
@@ -132,12 +120,6 @@ class User < ActiveRecord::Base
     return post
   end
 
-  def create_event!(attrs={})
-    attrs[:user_id] = self.id
-    event = Event.create!(attrs)
-    self.append(:owned_event_ids, event.id)
-    return event
-  end
 
   def create_comment!(poly, attrs={})
     attrs[:user_id] = self.id
@@ -176,20 +158,6 @@ class User < ActiveRecord::Base
     return mess
   end
 
-  def add_event!(event)
-    event.redappend(:added_user_ids, self.id)
-    event.remove(:invited_user_ids, self.id) if event.public == false
-    self.append(:added_event_ids, event.id)
-    self.remove(:invited_event_ids, event.id) if event.public == false
-  end
-
-  def remove_event!(event)
-    event.redremove(:added_user_ids, self.id)
-    event.remove(:invited_user_ids, self.id) if event.public == false
-    self.remove(:added_event_ids, event.id)
-    self.remove(:invited_event_ids, event.id) if event.public == false
-  end
-
 ###
 
   def name
@@ -223,7 +191,7 @@ class User < ActiveRecord::Base
       puts "Enter the ban report."      
       reason = gets.chomp
       self.update(deactivated: true)
-      BannedEmail.create(email: self.email, ban_report: reason)
+      Ban.create(email: self.email, ban_report: reason)
       puts "#{self.email} is now banned!"
     else
       puts "#{self.email} not banned. Exiting function."
@@ -235,7 +203,7 @@ class User < ActiveRecord::Base
   end
 
   def banned?(email)
-    BannedEmail.find_by(email: email).present?
+    Ban.find_by(email: email).present?
   end
 
   def send_feedback!(attrs={})
@@ -244,15 +212,6 @@ class User < ActiveRecord::Base
 
 
 private
-
-  def extract_university 
-    return if self.entity == true
-    if /[^.@]+\.edu$/ =~ self.email
-      self.university = $&
-    else
-      self.university = "UNKNOWN"
-    end
-  end
 
   def squeeze_fullname
     if self.fullname.blank?

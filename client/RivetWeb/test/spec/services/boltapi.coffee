@@ -3,7 +3,7 @@
 describe 'Service: Boltapi', ->
 
   # load the service's module
-  beforeEach module 'boltWebApp'
+  beforeEach module 'rivetWebApp'
 
   # instantiate service
   Boltapi = {}

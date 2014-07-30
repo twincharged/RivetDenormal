@@ -119,7 +119,7 @@ _______________________________________________________________________________
 |Changing from Ruby to JRuby is very simple. For the Gemfile, trade "pg" for
 |"activerecord-jdbcpostgresql-adapter", trade "thin" for "puma", hash out
 |"debugger", add "rubygems", and add "ruby '1.9.3', :engine => 'jruby',
-|:engine_version => '1.7.10'". Next go to Bolt/app/models/concerns and open
+|:engine_version => '1.7.10'". Next go to rivet/app/models/concerns and open
 |the PGArrayMethods file. Hash out this line in the "ex" and "get" methods:
 | return false unless query.is_a?(PG::Result)
 |And for the line below that one, change this chain:
@@ -164,9 +164,6 @@ _______________________________________________________________________________
 |- user ~> followers                    _count
 |- user ~> followed                     _count
 |- user ~> owned_posts
-|- user ~> owned_events
-|- user ~> added_events
-|- user ~> invited_events
 |- user ~> groups
 |- user ~> conversations
 |- user ~> blocked_users
@@ -175,24 +172,15 @@ _______________________________________________________________________________
 |
 |- post ~> user
 |- post ~> tagged_users
-|- post ~> sparkers                     _count
+|- post ~> likers                     _count
 |- post ~> comments                     _count
 |- post ~> flags                        _count
 |- post ~> shared_by                    _count
 |
-|- event ~> user
-|- event ~> tagged_users
-|- event ~> sparkers                    _count
-|- event ~> comments                    _count
-|- event ~> added_users                 _count
-|- event ~> invited_users
-|- event ~> flags                       _count
-|
 |- comment ~> user
 |- comment ~> post
-|- comment ~> event
 |- comment ~> tagged_users
-|- comment ~> sparkers                  _count
+|- comment ~> likers                  _count
 |- comment ~> flags                     _count
 |
 |- group ~> user
@@ -224,15 +212,12 @@ _______________________________________________________________________________
 |
 |- User/blocked_user_ids
 |
-|- Post/sparker_ids
+|- Post/liker_ids
 |- Post/comment_ids
 |- Post/shared_by_ids
 |
-|- Event/sparker_ids
-|- Event/comment_ids
-|- Event/added_user_ids
 |
-|- Comment/sparker_ids
+|- Comment/liker_ids
 |______________________________________________________________________________
 |** Changing Existing Postgres Relationship Arrays to Redis:
 |
@@ -278,8 +263,8 @@ _______________________________________________________________________________
 |** Database Combinations Tested And Previously Under Development:
 |
 |Polyglot persistent backends that were previously developed for this project
-|are listed below. It states why they were positive for Bolt's use case and
-|the issues caused them to be dismissed in regards to Bolt's specific use case.
+|are listed below. It states why they were positive for rivet's use case and
+|the issues caused them to be dismissed in regards to rivet's specific use case.
 |
 |-MySQL
 |  - Dismissed: PostgreSQL exists.
@@ -328,7 +313,7 @@ _______________________________________________________________________________
 |  + Light load on Redis.
 |
 |______________________________________________________________________________
-|** Bolt's Case-Specific CAP Theorem
+|** rivet's Case-Specific CAP Theorem
 |
 |                      Availability
 |        
@@ -346,7 +331,7 @@ _______________________________________________________________________________
 |   Consistency  ------------------------  Partition Tolerance
 |
 |______________________________________________________________________________
-|** Bolt's Case-Specific Persistence Model
+|** rivet's Case-Specific Persistence Model
 |
 |Nearly all data <=> data relationships are stored in arrays. For Redis, these
 |are Sets most of the time. For Postgres, they are array datatypes. This
@@ -380,7 +365,7 @@ _______________________________________________________________________________
 |efficiency, and atomicity by using a single query for multiple object lookups.
 |This opposes Redis, which mainly uses its value for displaying the count of 
 |items (or just because they need to be realtime), such as the number of
-|sparks a post has. This also takes a large load off of Redis because Postgres
+|likes a post has. This also takes a large load off of Redis because Postgres
 |holds most of the social graph, allowing Redis to be quick where it needs
 |to be.
 |______________________________________________________________________________
@@ -560,8 +545,8 @@ _______________________________________________________________________________
 |   preventing each post from calling self.user.photo, etc. This
 |   would let the database only make one trip for all posts,
 |   not one plus one for each post. This could substantially
-|   increase loading performance of post and event feeds. This
-|   also goes for each event, comment, etc.
+|   increase loading performance of post feeds. This
+|   also goes for each comment, etc.
 |
 |
 |

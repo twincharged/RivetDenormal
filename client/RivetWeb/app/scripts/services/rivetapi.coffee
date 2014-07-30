@@ -1,17 +1,14 @@
 'use strict'
 
-angular.module("boltWebApp.services", ['restangular'])
+angular.module("rivetWebApp.services", ['restangular'])
 
-.factory "BoltApi", (Restangular)->
+.factory "RivetApi", (Restangular)->
 
   getUser: (userId)->
     Restangular.one("users", userId).get()
 
   getProfile: (userId)->
     Restangular.one("users", userId).one("profile").get()
-
-  getEvents: (userId)->
-    Restangular.one("users", userId).one("events").get()
 
   getFollowers: (userId)->
     Restangular.one("users", userId).one("followers").get()
@@ -31,17 +28,8 @@ angular.module("boltWebApp.services", ['restangular'])
   getGroup: (userId, groupId)->
     Restangular.one("users", userId).one("groups", groupId).get()
 
-  getAddedEvents: (userId)->
-    Restangular.one("users", userId).one("added_events").get()
-
-  getInvitedEvents: (userId)->
-    Restangular.one("users", userId).one("invited_events").get()
-
-  getEvent: (eventId)->
-    Restangular.one("events", eventId).get()
-
   getPost: (postId)->
-    Restangular.one("posts", eventId).get()
+    Restangular.one("posts", postId).get()
 
   getSettings: (userId)->
     Restangular.one("users", userId).one("settings").get()

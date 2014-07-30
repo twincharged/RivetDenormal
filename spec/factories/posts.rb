@@ -21,13 +21,6 @@ FactoryGirl.define do
   	public true
   end
 
-  factory :event_share_post, class: "Post" do
-  	user_id { FactoryGirl.create(:user).id }
-  	body { Faker::Lorem.sentence(word_count = 5) }
-  	shareable { FactoryGirl.create(:post) }
-  	public true
-  end
-
   factory :youtube_post, class: "Post" do
   	user_id { FactoryGirl.create(:user).id }
   	body { Faker::Lorem.sentence(word_count = 5) }

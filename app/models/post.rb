@@ -9,7 +9,7 @@ class Post < ActiveRecord::Base
   validates :user_id, presence: true, length: {maximum: 5000}
   validates :shareable_type, inclusion: {in: %w( Post )}, allow_nil: true
   validates :youtube_url, length: {maximum: 500}
-  validate  :presence_of_content, :valid_content_combination, :disallow_private_event_share
+  validate  :presence_of_content, :valid_content_combination
   after_destroy :remove_from_list
   
 ##### Relations
@@ -20,8 +20,8 @@ class Post < ActiveRecord::Base
     User.find(self.user_id)
   end
 
-  def sparkers
-    User.find(self.sparker_ids)
+  def likers
+    User.find(self.liker_ids)
   end
 
   def comments
@@ -34,8 +34,8 @@ class Post < ActiveRecord::Base
 
 ###
 
-  def sparkers_count
-    self.redcount(:sparker_ids)
+  def likers_count
+    self.redcount(:liker_ids)
   end
 
   def comments_count
@@ -52,8 +52,8 @@ class Post < ActiveRecord::Base
 
 ##### Redis Attributes
 
-  def sparker_ids
-    self.redget(:sparker_ids)
+  def liker_ids
+    self.redget(:liker_ids)
   end
 
   def comment_ids
@@ -78,14 +78,6 @@ private
     errors.add(:base, "Try posting something!")
   end
 
-  def disallow_private_event_share
-    return unless self.shareable_type == "Event"
-    if self.shareable.public == false
-      errors.add(:base, "You cannot share a private event.")
-    else
-      return
-    end
-  end
 
   def remove_from_list
     self.user.remove(:owned_post_ids, self.id)

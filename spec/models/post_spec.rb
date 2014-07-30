@@ -38,18 +38,6 @@ describe Post do
       FactoryGirl.build(:post, body: nil).should_not be_valid
     end
 
-    it "should not share private event" do
-      event = FactoryGirl.create(:private_event)
-      post = FactoryGirl.build(:post, shareable: event).should_not be_valid
-    end
-
-    it "should require correct content" do
-      event = FactoryGirl.create(:public_event)
-      FactoryGirl.build(:photo_post, youtube_url: "H0Fte50Mnxw").should_not be_valid
-      FactoryGirl.build(:photo_post, shareable: event).should_not be_valid
-      FactoryGirl.build(:youtube_post, shareable: event).should_not be_valid
-    end
-
   end
 
 
@@ -88,11 +76,11 @@ describe Post do
       post.user.should == @user2
     end
 
-    it "should create post <~> sparkers" do
+    it "should create post <~> likers" do
       post = @user1.create_post!(body: "Testing... 1, 2, 3....")
-      @user2.spark!(post)
-      @user3.spark!(post)
-      post.sparkers.should include(@user2, @user3)
+      @user2.like!(post)
+      @user3.like!(post)
+      post.likers.should include(@user2, @user3)
     end
 
     it "should create post <~> tagged_users" do

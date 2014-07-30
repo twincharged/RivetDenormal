@@ -8,7 +8,7 @@ class Comment < ActiveRecord::Base
 
   validates :user_id, :threadable_id, :threadable_type, presence: true
   validates :body, presence: true, length: { maximum: 500 }
-  validates :threadable_type, inclusion: {in: %w( Post Event )}
+  validates :threadable_type, inclusion: {in: %w( Post )}
   before_save :verify_id_not_blocked, on: [:create, :update]
   after_destroy :remove_from_list
 
@@ -24,14 +24,14 @@ class Comment < ActiveRecord::Base
     User.find(self.tagged_user_ids)
   end
 
-  def sparkers
-    User.find(self.sparker_ids)
+  def likers
+    User.find(self.liker_ids)
   end
 
 ###
 
-  def sparkers_count
-    self.redcount(:sparker_ids)
+  def likers_count
+    self.redcount(:liker_ids)
   end
 
   def flag_count
@@ -40,8 +40,8 @@ class Comment < ActiveRecord::Base
   
 ###
 
-  def sparker_ids
-    self.redget(:sparker_ids)
+  def liker_ids
+    self.redget(:liker_ids)
   end
 
 private

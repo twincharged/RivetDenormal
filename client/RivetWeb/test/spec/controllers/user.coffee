@@ -3,7 +3,7 @@
 describe 'Controller: UserCtrl', ->
 
   # load the controller's module
-  beforeEach module 'boltWebApp'
+  beforeEach module 'rivetWebApp'
 
   UserCtrl = {}
   scope = {}

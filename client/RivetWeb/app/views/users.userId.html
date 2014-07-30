@@ -12,25 +12,6 @@ Posts:
   </li>
 <br/>
 
-<button ng-click="getEvents(user.id)">Events</button>
-  <li ng-repeat="event in events">
-    <div>{{event}}</div>
-  </li>
-<br/>
-
-<button ng-click="getAddedEvents(user.id)">Added Events</button>
-  <li ng-repeat="aevent in addedEvents">
-    <div>{{aevent}}</div>
-<!--       <br/>Image (if you used AWS key in Rails app): <br/> <img ng-src="{{aevent.photo.url}}">
- -->      <!-- Example of how to get necessary images (with .photo.url) -->
-  </li>
-<br/>
-
-<button ng-click="getInvitedEvents(user.id)">Invited Events</button>
-  <li ng-repeat="ievent in invitedEvents">
-    <div>{{ievent}}</div>
-  </li>
-<br/>
 
 <button ng-click="getConversations(user.id)">Conversations</button>
   <li ng-repeat="convo in conversations">
