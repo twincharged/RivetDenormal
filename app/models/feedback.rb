@@ -14,6 +14,7 @@ class Feedback < ActiveRecord::Base
   
 private
 
+  # This would never make it to production. Just a demo.
   def eliminate_feedback_spam
     time = Time.now - 30.seconds
     if Feedback.where("user_id = ? AND created_at > ?", self.user_id, time).load.any?
